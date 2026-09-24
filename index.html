@@ -1,400 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
-<title>Marvel Survivors</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Andreea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;user-select:none;-webkit-tap-highlight-color:transparent}
-html,body{width:100%;height:100%;overflow:hidden;background:#0a0a15;font-family:'Segoe UI',Arial,sans-serif;color:#fff;touch-action:none}
-canvas{display:block;width:100%;height:100%}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:15px;z-index:10;background:radial-gradient(circle at center,#1a1a3e 0%,#0a0a15 100%);overflow-y:auto}
-.hidden{display:none!important}
-h1{font-size:clamp(28px,6vw,56px);background:linear-gradient(90deg,#e52529,#f7d02e,#5182ed);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900;letter-spacing:2px;text-align:center}
-h2{font-size:clamp(18px,4vw,28px);color:#f7d02e}
-.btn{padding:14px 28px;font-size:18px;font-weight:700;background:linear-gradient(135deg,#e52529,#a01015);color:#fff;border:2px solid #f7d02e;border-radius:10px;cursor:pointer;min-width:200px;text-transform:uppercase;letter-spacing:1px}
-.btn.alt{background:linear-gradient(135deg,#5182ed,#1f4ea8)}
-input{padding:12px 18px;font-size:16px;border:2px solid #f7d02e;border-radius:8px;background:#0a0a15;color:#fff;min-width:240px;text-align:center}
-.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;max-width:720px;width:100%}
-.hero-card{padding:14px;border:2px solid #444;border-radius:10px;background:rgba(255,255,255,.04);cursor:pointer;text-align:center}
-.hero-card.selected{border-color:#f7d02e;background:rgba(247,208,46,.12)}
-.hero-icon{width:60px;height:60px;margin:0 auto 8px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900}
-.hero-name{font-weight:700;font-size:14px;margin-bottom:4px}
-.hero-desc{font-size:11px;color:#aaa;line-height:1.3}
-.hud{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;pointer-events:none;z-index:5;font-size:14px}
-.hud-left,.hud-right{background:rgba(0,0,0,.6);padding:10px 14px;border-radius:8px;border:1px solid #444}
-.hpbar{width:200px;height:14px;background:#2a0a0a;border:2px solid #e52529;border-radius:7px;overflow:hidden;margin-top:4px}
-.hpbar>div{height:100%;background:linear-gradient(90deg,#e52529,#ff6666)}
-.xpbar{width:200px;height:8px;background:#0a2a0a;border:1px solid #5182ed;border-radius:4px;overflow:hidden;margin-top:4px}
-.xpbar>div{height:100%;background:linear-gradient(90deg,#5182ed,#7aaeff)}
-.upgrade-panel{background:rgba(10,10,20,.95);border:2px solid #f7d02e;border-radius:12px;padding:20px;max-width:520px;width:90%}
-.upgrade-option{padding:14px;margin:8px 0;background:rgba(255,255,255,.05);border:2px solid #555;border-radius:8px;cursor:pointer}
-.upgrade-option:hover{background:rgba(247,208,46,.15);border-color:#f7d02e}
-.upgrade-name{font-weight:700;color:#f7d02e;font-size:16px}
-.upgrade-desc{font-size:13px;color:#ccc}
-.upgrade-rarity{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:6px}
-.rarity-common{background:#555}.rarity-rare{background:#5182ed}.rarity-epic{background:#a020f0}.rarity-legendary{background:#f7d02e;color:#000}
-.joystick{position:absolute;bottom:40px;left:40px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);display:none;z-index:4}
-.joystick-knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:rgba(247,208,46,.6)}
-.dashbtn{position:absolute;bottom:50px;right:40px;width:70px;height:70px;border-radius:50%;background:rgba(81,130,237,.5);border:2px solid #5182ed;color:#fff;font-size:26px;display:none;z-index:4}
-@media(hover:none)and(pointer:coarse){.joystick,.dashbtn{display:block}}
-.leaderboard-list{max-height:340px;overflow-y:auto;width:90%;max-width:520px;background:rgba(0,0,0,.4);border:1px solid #555;border-radius:8px;padding:10px}
-.lb-row{display:grid;grid-template-columns:40px 1fr 80px 70px;padding:8px 12px;border-bottom:1px solid #333;font-size:14px}
-.lb-row.head{font-weight:700;color:#f7d02e}
-.toast{position:fixed;top:20%;left:50%;transform:translateX(-50%);background:rgba(247,208,46,.95);color:#000;padding:16px 32px;border-radius:10px;font-weight:900;font-size:28px;pointer-events:none;animation:pop 1.2s forwards;z-index:20}
-@keyframes pop{0%{opacity:0;transform:translate(-50%,20px) scale(.5)}20%{opacity:1;transform:translate(-50%,0) scale(1.2)}40%{transform:translate(-50%,0) scale(1)}90%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px) scale(.8)}}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:15px}
-.stats span{color:#f7d02e;font-weight:700}
+  :root{
+    --midnight:#180f2b;
+    --midnight-2:#241a3f;
+    --gold:#e7b65f;
+    --blush:#f0aebd;
+    --cream:#f6efe4;
+    --line: rgba(246,239,228,0.14);
+    box-sizing:border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{box-sizing:inherit; margin:0; padding:0;}
+  html{scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior:smooth;}
+  html,body{height:100%;}
+  body{
+    background:var(--midnight);
+    color:var(--cream);
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+  .serif{font-family:'Fraunces', serif;}
+
+  /* ---------- Ambient sparks (shared background) ---------- */
+  .spark{
+    position:fixed; bottom:-10px; border-radius:50%;
+    background:var(--gold); opacity:0.55; pointer-events:none; z-index:1;
+    animation: rise linear infinite;
+    filter: blur(0.3px);
+  }
+  @keyframes rise{
+    0%{ transform:translateY(0) translateX(0); opacity:0; }
+    10%{ opacity:0.6; }
+    90%{ opacity:0.35; }
+    100%{ transform:translateY(-110vh) translateX(20px); opacity:0; }
+  }
+
+  section{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:6rem 1.5rem;
+    text-align:center;
+    z-index:2;
+  }
+
+  /* ---------- Hero ---------- */
+  #hero .eyebrow{
+    font-size:0.95rem;
+    letter-spacing:0.02em;
+    color:var(--blush);
+    opacity:0;
+    animation: fadeUp 1s ease-out 0.2s forwards;
+  }
+  #hero h1{
+    font-size: clamp(2.6rem, 8vw, 5.2rem);
+    font-weight:500;
+    line-height:1.05;
+    margin-top:0.6rem;
+    max-width:16ch;
+    opacity:0;
+    animation: fadeUp 1.1s ease-out 0.6s forwards;
+  }
+  #hero .sub{
+    margin-top:1.6rem;
+    max-width:34ch;
+    font-size:1.05rem;
+    line-height:1.6;
+    color:rgba(246,239,228,0.75);
+    opacity:0;
+    animation: fadeUp 1.1s ease-out 1.1s forwards;
+  }
+  .scroll-hint{
+    position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+    font-size:0.85rem; color:rgba(246,239,228,0.5);
+    opacity:0; animation: fadeUp 1s ease-out 1.7s forwards, bob 2.2s ease-in-out 2.7s infinite;
+  }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,6px);} }
+
+  /* ---------- Letter ---------- */
+  #letter{
+    background:linear-gradient(180deg, var(--midnight) 0%, var(--midnight-2) 100%);
+  }
+  .letter-card{
+    max-width:540px;
+    text-align:left;
+  }
+  .letter-card .kicker{
+    font-size:0.95rem; color:var(--gold); margin-bottom:1.4rem; display:block;
+  }
+  .letter-card p{
+    font-size:1.08rem;
+    line-height:1.85;
+    color:rgba(246,239,228,0.9);
+    margin-bottom:1.3rem;
+  }
+  .letter-card .sign{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.4rem;
+    margin-top:1.2rem;
+    color:var(--blush);
+  }
+  .reveal{
+    opacity:0; transform:translateY(24px);
+    transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Candles ---------- */
+  #wish{
+    background:var(--midnight-2);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  #wish h2{
+    font-size:clamp(1.8rem,4.5vw,2.6rem);
+    font-weight:500;
+    margin-bottom:0.6rem;
+  }
+  #wish .hint{
+    color:rgba(246,239,228,0.65);
+    margin-bottom:3rem;
+    font-size:1rem;
+  }
+  .cake{
+    display:flex;
+    gap:2.4rem;
+    margin-bottom:2.5rem;
+  }
+  .candle-btn{
+    background:none; border:none; cursor:pointer; padding:0.4rem;
+    display:flex; flex-direction:column; align-items:center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .candle-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:4px; border-radius:6px; }
+  .flame{
+    width:14px; height:22px;
+    background: radial-gradient(circle at 50% 70%, #fff2c7, var(--gold) 55%, #d9832f 90%);
+    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+    margin-bottom:6px;
+    animation: flicker 1.6s ease-in-out infinite;
+    transform-origin:bottom center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  @keyframes flicker{
+    0%,100%{ transform:scale(1) rotate(-1deg); }
+    50%{ transform:scale(1.08) rotate(2deg); }
+  }
+  .candle-btn.out .flame{ opacity:0; transform:scale(0.2) translateY(6px); }
+  .stick{
+    width:8px; height:52px;
+    background: linear-gradient(180deg, var(--blush), #c98a9c);
+    border-radius:2px;
+  }
+  .smoke{
+    width:2px; height:0;
+    background: rgba(246,239,228,0.4);
+    margin-bottom:6px;
+    opacity:0;
+  }
+  .candle-btn.out .smoke{
+    animation: smokeUp 1.2s ease-out forwards;
+  }
+  @keyframes smokeUp{
+    0%{ height:0; opacity:0.6; transform:translateY(0);}
+    100%{ height:34px; opacity:0; transform:translateY(-14px);}
+  }
+  .wish-msg{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.3rem;
+    color:var(--gold);
+    min-height:1.6em;
+    opacity:0;
+    transition: opacity 0.6s ease;
+  }
+  .wish-msg.show{ opacity:1; }
+
+  /* ---------- Closing ---------- */
+  #closing h2{
+    font-size:clamp(2rem,6vw,3.2rem);
+    font-weight:500;
+    max-width:14ch;
+    margin-bottom:1rem;
+  }
+  #closing p{
+    color:rgba(246,239,228,0.75);
+    max-width:32ch;
+    line-height:1.7;
+    font-size:1.05rem;
+  }
+  #closing .year{
+    margin-top:2.5rem;
+    font-size:0.9rem;
+    color:rgba(246,239,228,0.4);
+    letter-spacing:0.02em;
+  }
+
+  /* confetti burst */
+  .confetti{
+    position:fixed; top:-10px; z-index:50;
+    width:8px; height:14px; opacity:0.9;
+    pointer-events:none;
+  }
 </style>
 </head>
 <body>
-<canvas id="cv"></canvas>
-<div id="menuScreen" class="screen">
-  <h1>MARVEL<br>SURVIVORS</h1>
-  <input id="nameInput" type="text" placeholder="ENTER HERO NAME" maxlength="14"/>
-  <button class="btn" onclick="goToHeroSelect()">START RUN</button>
-  <button class="btn alt" onclick="showLeaderboard()">🏆 LEADERBOARD</button>
-  <div style="font-size:12px;color:#888">WASD/Arrows move · Space dash · Auto-attack</div>
-</div>
-<div id="heroScreen" class="screen hidden">
-  <h2>CHOOSE YOUR HERO</h2>
-  <div id="heroList" class="heroes"></div>
-  <button class="btn" onclick="startGame()">BEGIN MISSION</button>
-  <button class="btn alt" onclick="showScreen('menuScreen')">Back</button>
-</div>
-<div class="hud hidden" id="hud">
-  <div class="hud-left">
-    <div>❤️ <span id="hpText"></span></div>
-    <div class="hpbar"><div id="hpFill"></div></div>
-    <div style="margin-top:6px">⭐ LVL <span id="lvlText">1</span></div>
-    <div class="xpbar"><div id="xpFill"></div></div>
+
+<section id="hero">
+  <span class="eyebrow">A little something for</span>
+  <h1 class="serif">Happy Birthday,<br>Andreea</h1>
+  <p class="sub">Another trip around the sun for someone who makes the whole ride better. Scroll down — there's a bit more.</p>
+  <span class="scroll-hint">↓ keep going</span>
+</section>
+
+<section id="letter">
+  <div class="letter-card reveal">
+    <span class="kicker serif">A note, just for you</span>
+    <p>Andreea, I hope today feels exactly the way a birthday should — a little slower, a little sweeter, full of the people and small moments that make you happiest.</p>
+    <p>You've got a way of making things brighter just by being in them, and this is your day to have that same warmth pointed right back at you. So take the compliments, eat the cake without guilt, and let today be entirely yours.</p>
+    <p>Here's to another year that's kinder, funnier, and even better than the last one.</p>
+    <span class="sign serif">With so much love</span>
   </div>
-  <div class="hud-right">
-    <div>⏱️ <span id="timeText">0:00</span></div>
-    <div>💀 <span id="killText">0</span></div>
-    <div>🦸 <span id="heroText">-</span></div>
-  </div>
-</div>
-<div class="joystick" id="joystick"><div class="joystick-knob" id="joystickKnob"></div></div>
-<button class="dashbtn" id="dashBtn">💨</button>
-<div id="upgradeScreen" class="screen hidden" style="background:rgba(0,0,0,.7)">
-  <div class="upgrade-panel"><h2 style="text-align:center;margin-bottom:12px">⬆️ LEVEL UP!</h2><div id="upgradeList"></div></div>
-</div>
-<div id="gameOverScreen" class="screen hidden">
-  <h1 style="background:none;color:#e52529">MISSION FAILED</h1>
-  <div class="stats">
-    <div>Time: <span id="finalTime"></span></div><div>Kills: <span id="finalKills"></span></div>
-    <div>Level: <span id="finalLevel"></span></div><div>Score: <span id="finalScore"></span></div>
-  </div>
-  <button class="btn" onclick="goToHeroSelect()">PLAY AGAIN</button>
-  <button class="btn alt" onclick="showScreen('menuScreen')">MAIN MENU</button>
-</div>
-<div id="leaderboardScreen" class="screen hidden">
-  <h1 style="font-size:36px">🏆 TOP HEROES</h1>
-  <div id="lbList" class="leaderboard-list"></div>
-  <button class="btn" onclick="showScreen('menuScreen')">BACK</button>
-</div>
+</section>
+
+<section id="wish">
+  <h2 class="serif">Make a wish</h2>
+  <p class="hint">Blow out the candles — one by one.</p>
+  <div class="cake" id="cake"></div>
+  <div class="wish-msg serif" id="wishMsg"></div>
+</section>
+
+<section id="closing">
+  <h2 class="serif">Happy Birthday, Andreea</h2>
+  <p>Go celebrate. You've earned every bit of it.</p>
+  <span class="year">✦</span>
+</section>
+
 <script>
-"use strict";
-/* ---- Supabase: loaded safely, NEVER blocks the game ---- */
-let sb=null;
-import("https://esm.sh/@supabase/supabase-js@2").then(m=>{
-  sb=m.createClient("https://lnztwceiuzqxazatdten.supabase.co","sb_publishable_XX4svimjCN05aZ64giuy0g_R4ES5GUU");
-}).catch(()=>console.warn("Supabase offline - local scores only"));
+// ambient sparks
+const sparkCount = window.innerWidth < 600 ? 10 : 18;
+for(let i=0;i<sparkCount;i++){
+  const s = document.createElement('div');
+  s.className='spark';
+  const size = 2 + Math.random()*3;
+  s.style.width = size+'px';
+  s.style.height = size+'px';
+  s.style.left = Math.random()*100+'vw';
+  s.style.animationDuration = (8 + Math.random()*10)+'s';
+  s.style.animationDelay = (Math.random()*10)+'s';
+  document.body.appendChild(s);
+}
 
-const HEROES={
- spiderman:{name:"Spider-Man",icon:"🕷️",color:"#e52529",accent:"#1f4ea8",desc:"Fast webs. 10% dodge.",weapon:"web",speedMul:1.0,hpMul:0.9,dmgMul:1.0,fireRate:0.45,special:"dodge"},
- ironman:{name:"Iron Man",icon:"⚡",color:"#d4af37",accent:"#a01015",desc:"Piercing repulsors. Fast.",weapon:"repulsor",speedMul:1.15,hpMul:1.0,dmgMul:1.1,fireRate:0.6,special:"flight"},
- thor:{name:"Thor",icon:"⚡",color:"#5182ed",accent:"#ccc",desc:"Mjolnir boomerang + lightning aura.",weapon:"mjolnir",speedMul:0.95,hpMul:1.2,dmgMul:1.3,fireRate:0.9,special:"aura"},
- captain:{name:"Captain A.",icon:"★",color:"#1f4ea8",accent:"#e52529",desc:"Bouncing shield. Slower spawns.",weapon:"shield",speedMul:1.0,hpMul:1.2,dmgMul:1.0,fireRate:0.8,special:"slowspawn"},
- strange:{name:"Dr. Strange",icon:"✦",color:"#a020f0",accent:"#f7d02e",desc:"Homing bolts. Auto-portal escape.",weapon:"mystic",speedMul:1.0,hpMul:0.95,dmgMul:1.15,fireRate:0.7,special:"portal"},
- wanda:{name:"Scarlet W.",icon:"✸",color:"#e52529",accent:"#a020f0",desc:"Chaos AoE. Slows all enemies.",weapon:"chaos",speedMul:1.0,hpMul:1.0,dmgMul:1.2,fireRate:1.0,special:"slowall"}};
-const ENEMIES=[
- {id:"hydra",color:"#4a6b3a",r:14,hp:20,speed:55,dmg:8,xp:1,score:10},
- {id:"chitauri",color:"#6a4a8a",r:12,hp:15,speed:90,dmg:6,xp:1,score:8},
- {id:"doombot",color:"#555566",r:16,hp:35,speed:65,dmg:10,xp:2,score:18,shoots:true},
- {id:"ultron",color:"#c0c0d0",r:14,hp:40,speed:75,dmg:12,xp:3,score:25},
- {id:"symbiote",color:"#111",r:11,hp:22,speed:110,dmg:9,xp:2,score:15},
- {id:"skrull",color:"#3a8a3a",r:13,hp:28,speed:80,dmg:11,xp:2,score:17},
- {id:"outrider",color:"#7a2a2a",r:15,hp:50,speed:105,dmg:14,xp:4,score:30},
- {id:"sentinel",color:"#e06a10",r:26,hp:180,speed:45,dmg:18,xp:10,score:80,shoots:true},
- {id:"darkelf",color:"#2a2a5a",r:13,hp:45,speed:120,dmg:13,xp:4,score:35,teleports:true},
- {id:"abom",color:"#4a8a2a",r:50,hp:1200,speed:40,dmg:25,xp:60,score:500,boss:true,shoots:true},
- {id:"thanos",color:"#8a4aa0",r:55,hp:2500,speed:50,dmg:30,xp:120,score:1200,boss:true,shoots:true}];
-const UPGRADES=[
- {n:"Enhanced Strength",d:"+20% damage",r:"common",f:s=>s.dmgMul*=1.2},
- {n:"Critical Hits",d:"10% chance for 3x damage",r:"rare",f:s=>s.crit+=0.1},
- {n:"Armor Piercing",d:"All shots pierce enemies",r:"rare",f:s=>s.pierceAll=true},
- {n:"Quick Reflexes",d:"+15% fire rate",r:"common",f:s=>s.fireRateMul*=1.15},
- {n:"Rapid Fire",d:"+1 projectile",r:"rare",f:s=>s.projCount+=1},
- {n:"Berserker",d:"Attack faster below 30% HP",r:"epic",f:s=>s.berserker=true},
- {n:"Wider Impact",d:"+30% attack area",r:"common",f:s=>s.areaMul*=1.3},
- {n:"Long Range",d:"Projectiles travel 50% farther",r:"common",f:s=>s.rangeMul*=1.5},
- {n:"Chain Lightning",d:"Hits zap 2 nearby enemies",r:"legendary",f:s=>s.chain=true},
- {n:"Vibranium Suit",d:"+25 max HP",r:"common",f:s=>{s.maxHp+=25;s.hp+=25}},
- {n:"Regeneration",d:"Heal 1 HP/s",r:"rare",f:s=>s.regen+=1},
- {n:"Spider-Sense",d:"+10% dodge chance",r:"rare",f:s=>s.dodge+=0.1},
- {n:"Shield Protocol",d:"2s invincibility every 30s",r:"epic",f:s=>s.shieldOn=true},
- {n:"Super Soldier Serum",d:"+15% move speed",r:"common",f:s=>s.speedMul*=1.15},
- {n:"Web Swing",d:"Dash (Space / 💨 button)",r:"rare",f:s=>s.dash=true},
- {n:"Phantom Form",d:"Pass through enemies",r:"epic",f:s=>s.phantom=true},
- {n:"Avengers Assemble",d:"Summon 2 allies every 60s",r:"legendary",f:s=>s.summonOn=true},
- {n:"Infinity Stone",d:"Random power every 60s",r:"legendary",f:s=>s.stoneOn=true},
- {n:"Gamma Radiation",d:"Enemies explode on death",r:"epic",f:s=>s.explode=true},
- {n:"Magnet Core",d:"+60% XP pickup radius",r:"common",f:s=>s.magnetMul*=1.6}];
+// scroll reveal for letter
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.3});
+revealEls.forEach(el=>io.observe(el));
 
-const cv=document.getElementById("cv"),ctx=cv.getContext("2d");
-let W,H;function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight}
-addEventListener("resize",resize);resize();
-let player=null,enemies=[],projectiles=[],enemyProj=[],orbs=[],particles=[],allies=[],floatTexts=[];
-let keys={},joyVec={x:0,y:0},selectedHero="spiderman",playerName="Hero";
-let running=false,paused=false,spawnAcc=0,lastBoss=0,lastT=0;
-const fmt=s=>{s|=0;return (s/60|0)+":"+String(s%60).padStart(2,"0")};
-const $=id=>document.getElementById(id);
+// candles
+const cake = document.getElementById('cake');
+const wishMsg = document.getElementById('wishMsg');
+const NUM_CANDLES = 5;
+let lit = NUM_CANDLES;
 
-function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.add("hidden"));
- if(id)$(id).classList.remove("hidden");$("hud").classList.toggle("hidden",id!=="game")}
-function goToHeroSelect(){const v=$("nameInput").value.trim();if(v)playerName=v.slice(0,14);renderHeroes();showScreen("heroScreen")}
-function renderHeroes(){const l=$("heroList");l.innerHTML="";for(const k in HEROES){const h=HEROES[k],c=document.createElement("div");
- c.className="hero-card"+(k===selectedHero?" selected":"");
- c.innerHTML=`<div class="hero-icon" style="background:${h.color};color:${h.accent}">${h.icon}</div><div class="hero-name">${h.name}</div><div class="hero-desc">${h.desc}</div>`;
- c.onclick=()=>{selectedHero=k;renderHeroes()};l.appendChild(c)}}
+for(let i=0;i<NUM_CANDLES;i++){
+  const btn = document.createElement('button');
+  btn.className='candle-btn';
+  btn.setAttribute('aria-label','Blow out candle');
+  btn.innerHTML = '<div class="smoke"></div><div class="flame"></div><div class="stick"></div>';
+  btn.addEventListener('click', ()=>{
+    if(btn.classList.contains('out')) return;
+    btn.classList.add('out');
+    lit--;
+    if(lit === 0){
+      wishMsg.textContent = "Wish made. It's already coming true.";
+      wishMsg.classList.add('show');
+      burstConfetti();
+    }
+  });
+  cake.appendChild(btn);
+}
 
-function startGame(){const h=HEROES[selectedHero];
- player={x:W/2,y:H/2,r:16,hp:Math.round(100*h.hpMul),maxHp:Math.round(100*h.hpMul),speed:210*h.speedMul,hero:h,heroKey:k=>k,
-  fireRate:h.fireRate,fireCD:0,fireRateMul:1,dmg:10,dmgMul:h.dmgMul,crit:0,pierceAll:false,areaMul:1,rangeMul:1,projCount:1,
-  berserker:false,regen:0,dodge:h.special==="dodge"?0.1:0,shieldOn:false,shieldT:0,shieldTimer:0,speedMul:1,dash:false,dashCD:0,dashT:0,
-  phantom:false,summonOn:false,summonT:60,stoneOn:false,stoneT:60,explode:false,chain:false,magnetMul:1,
-  fireRange:340,xp:0,lvl:1,xpNeed:10,time:0,kills:0,score:0,pending:0,auraCD:0,portalCD:0,slowCD:0};
- enemies=[];projectiles=[];enemyProj=[];orbs=[];particles=[];allies=[];floatTexts=[];
- spawnAcc=0;lastBoss=0;state_slow=1;state_slowT=0;
- running=true;paused=false;lastT=performance.now();
- showScreen("game");requestAnimationFrame(loop)}
-let state_slow=1,state_slowT=0;
-
-addEventListener("keydown",e=>{const k=e.key.toLowerCase();keys[k]=true;
- if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(k))e.preventDefault();
- if(k===" ")tryDash()});
-addEventListener("keyup",e=>keys[e.key.toLowerCase()]=false);
-function tryDash(){if(player&&player.dash&&player.dashCD<=0){player.dashT=0.15;player.dashCD=3}}
-$("dashBtn").addEventListener("touchstart",e=>{e.preventDefault();tryDash()},{passive:false});
-
-const joy=$("joystick"),knob=$("joystickKnob");let joyId=null,jc={x:0,y:0};
-joy.addEventListener("touchstart",e=>{const t=e.changedTouches[0];joyId=t.identifier;
- const r=joy.getBoundingClientRect();jc={x:r.left+r.width/2,y:r.top+r.height/2};joyMove(t.clientX,t.clientY);e.preventDefault()},{passive:false});
-joy.addEventListener("touchmove",e=>{for(const t of e.changedTouches)if(t.identifier===joyId)joyMove(t.clientX,t.clientY);e.preventDefault()},{passive:false});
-joy.addEventListener("touchend",e=>{for(const t of e.changedTouches)if(t.identifier===joyId){joyId=null;joyVec={x:0,y:0};knob.style.transform="translate(-50%,-50%)"}});
-function joyMove(cx,cy){let dx=cx-jc.x,dy=cy-jc.y;const d=Math.hypot(dx,dy)||1,m=Math.min(d,50)/50,a=Math.atan2(dy,dx);
- joyVec={x:Math.cos(a)*m,y:Math.sin(a)*m};
- knob.style.transform=`translate(calc(-50% + ${joyVec.x*40}px),calc(-50% + ${joyVec.y*40}px))`}
-
-function loop(t){if(!running)return;const dt=Math.min(0.05,(t-lastT)/1000);lastT=t;
- if(!paused)update(dt);render();requestAnimationFrame(loop)}
-
-function nearestEnemy(fx,fy,maxD){let best=null,bd=maxD||player.fireRange*player.rangeMul;
- for(const e of enemies){if(e.hp<=0)continue;const d=Math.hypot(e.x-fx,e.y-fy);if(d<bd){bd=d;best=e}}return best}
-
-function update(dt){if(!player||player.hp<=0)return;player.time+=dt;
- let ix=0,iy=0;
- if(keys.w||keys.arrowup)iy--;if(keys.s||keys.arrowdown)iy++;
- if(keys.a||keys.arrowleft)ix--;if(keys.d||keys.arrowright)ix++;
- ix+=joyVec.x;iy+=joyVec.y;const il=Math.hypot(ix,iy);if(il>1){ix/=il;iy/=il}
- let spd=player.speed*player.speedMul;
- if(player.dashT>0){spd*=3;player.dashT-=dt}
- if(player.dashCD>0)player.dashCD-=dt;
- player.x=Math.max(player.r,Math.min(W-player.r,player.x+ix*spd*dt));
- player.y=Math.max(player.r,Math.min(H-player.r,player.y+iy*spd*dt));
- if(player.regen)player.hp=Math.min(player.maxHp,player.hp+player.regen*dt);
- if(player.shieldOn){player.shieldTimer+=dt;if(player.shieldTimer>=30){player.shieldTimer=0;player.shieldT=2}}
- if(player.shieldT>0)player.shieldT-=dt;
- if(player.portalCD>0)player.portalCD-=dt;
- const sp=player.hero.special;
- if(sp==="aura"){player.auraCD-=dt;if(player.auraCD<=0){player.auraCD=1;
-   for(const e of enemies)if(Math.hypot(e.x-player.x,e.y-player.y)<140*player.areaMul)damageEnemy(e,player.dmg*player.dmgMul*0.5);
-   for(let i=0;i<8;i++){const a=Math.random()*6.28;particles.push({x:player.x+Math.cos(a)*60,y:player.y+Math.sin(a)*60,vx:0,vy:0,life:0.25,color:"#5182ed",size:3})}}}
- if(sp==="portal"&&player.portalCD<=0){let n=0;for(const e of enemies)if(Math.hypot(e.x-player.x,e.y-player.y)<70)n++;
-   if(n>=3){player.portalCD=8;for(let i=0;i<12;i++)particles.push({x:player.x,y:player.y,vx:(Math.random()-.5)*300,vy:(Math.random()-.5)*300,life:0.4,color:"#a020f0",size:4});
-     player.x=Math.max(player.r,Math.min(W-player.r,player.x+(Math.random()-.5)*400));
-     player.y=Math.max(player.r,Math.min(H-player.r,player.y+(Math.random()-.5)*400));toast("PORTAL!")}}
- if(sp==="slowall"){player.slowCD-=dt;if(player.slowCD<=0){player.slowCD=10;state_slow=0.5;state_slowT=3;toast("REALITY WARP!")}}
- if(state_slowT>0){state_slowT-=dt;if(state_slowT<=0)state_slow=1}
- spawnAcc+=dt*(1+player.time*0.08)*(sp==="slowspawn"?0.8:1);
- while(spawnAcc>=1){spawnAcc--;spawnEnemy()}
- if(player.time-lastBoss>=60){lastBoss=player.time;spawnBoss();toast("⚠️ BOSS INCOMING!")}
- player.fireCD-=dt;
- if(player.fireCD<=0){const t=nearestEnemy(player.x,player.y);
-   if(t){fireWeapon(t);let fr=player.fireRate/player.fireRateMul;
-     if(player.berserker&&player.hp/player.maxHp<0.3)fr*=0.6;player.fireCD=fr}}
- for(const a of allies){a.life-=dt;a.cd-=dt;a.x+=Math.cos(a.t+player.time)*40*dt;a.y+=Math.sin(a.t+player.time)*40*dt;
-   if(a.cd<=0){const t=nearestEnemy(a.x,a.y,500);if(t){const an=Math.atan2(t.y-a.y,t.x-a.x);
-     projectiles.push({x:a.x,y:a.y,vx:Math.cos(an)*600,vy:Math.sin(an)*600,dmg:10*player.dmgMul,r:4,color:"#f7d02e",life:1.2,friendly:true})}a.cd=0.4}}
- allies=allies.filter(a=>a.life>0);
- for(const p of projectiles){
-   if(p.homing){const t=nearestEnemy(p.x,p.y,600);if(t){const an=Math.atan2(t.y-p.y,t.x-p.x),s2=Math.hypot(p.vx,p.vy);
-     p.vx=p.vx*0.85+Math.cos(an)*s2*0.15;p.vy=p.vy*0.85+Math.sin(an)*s2*0.15}}
-   if(p.boom){p.t+=dt;if(p.t>0.9){const an=Math.atan2(player.y-p.y,player.x-p.x);p.vx=Math.cos(an)*600;p.vy=Math.sin(an)*600;
-     if(Math.hypot(player.x-p.x,player.y-p.y)<25)p.life=0}}
-   if(p.bounces!==undefined){if(p.x<0||p.x>W){p.vx*=-1;p.hits=null}if(p.y<0||p.y>H){p.vy*=-1;p.hits=null}
-     if(p.x<0)p.x=0;if(p.x>W)p.x=W;if(p.y<0)p.y=0;if(p.y>H)p.y=H}
-   p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
-   if(p.friendly){for(const e of enemies){if(e.hp<=0)continue;
-     if(Math.hypot(e.x-p.x,e.y-p.y)<e.r+p.r){
-       const multi=p.pierce||p.boom||p.bounces!==undefined;
-       if(multi){p.hits=p.hits||{};if(p.hits[e.uid])continue;p.hits[e.uid]=1}
-       let dmg=p.dmg;if(Math.random()<player.crit){dmg*=3;floatText(e.x,e.y-14,"CRIT!","#f7d02e")}
-       damageEnemy(e,dmg);
-       if(player.chain){let c=0;for(const o of enemies){if(o===e||o.hp<=0||c>=2)continue;
-         if(Math.hypot(o.x-e.x,o.y-e.y)<150){damageEnemy(o,dmg*0.6);c++}}}
-       if(!multi)p.life=0;break}}}}
- projectiles=projectiles.filter(p=>p.life>0&&p.x>-60&&p.x<W+60&&p.y>-60&&p.y<H+60);
- for(const p of enemyProj){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
-   if(Math.hypot(player.x-p.x,player.y-p.y)<player.r+p.r){hitPlayer(p.dmg);p.life=0}}
- enemyProj=enemyProj.filter(p=>p.life>0);
- for(const e of enemies){if(e.hp<=0)continue;
-   const an=Math.atan2(player.y-e.y,player.x-e.x),s2=e.speed*state_slow;
-   e.x+=Math.cos(an)*s2*dt;e.y+=Math.sin(an)*s2*dt;
-   if(e.teleports){e.tp=(e.tp||0)-dt;if(e.tp<=0){e.tp=2+Math.random()*2;
-     e.x=player.x+(Math.random()-.5)*300;e.y=player.y+(Math.random()-.5)*300}}
-   if(e.shoots){e.sc=(e.sc||1.5)-dt;if(e.sc<=0){e.sc=e.boss?1.5:2.2;const a2=Math.atan2(player.y-e.y,player.x-e.x),cnt=e.boss?8:1;
-     for(let i=0;i<cnt;i++){const a3=cnt>1?a2+(i-(cnt-1)/2)*0.2:a2;
-       enemyProj.push({x:e.x,y:e.y,vx:Math.cos(a3)*250,vy:Math.sin(a3)*250,dmg:e.dmg*0.6,r:4,color:"#ff4444",life:2.5})}}}
-   if(e.cd>0)e.cd-=dt;
-   if(Math.hypot(e.x-player.x,e.y-player.y)<e.r+player.r&&e.cd<=0){e.cd=0.6;
-     if(player.dashT<=0)hitPlayer(e.dmg*0.5)}
-   if(e.hit>0)e.hit-=dt}
- const dead=enemies.filter(e=>e.hp<=0);
- if(dead.length){for(const e of dead){player.kills++;player.score+=e.score;
-    for(let i=0;i<e.xp;i++)orbs.push({x:e.x+(Math.random()-.5)*20,y:e.y+(Math.random()-.5)*20,vx:(Math.random()-.5)*100,vy:(Math.random()-.5)*100,life:30});
-    for(let i=0;i<6;i++)particles.push({x:e.x,y:e.y,vx:(Math.random()-.5)*150,vy:(Math.random()-.5)*150,life:0.4,color:e.color,size:3});
-    if(player.explode){for(const o of enemies)if(o.hp>0&&Math.hypot(o.x-e.x,o.y-e.y)<80*player.areaMul)damageEnemy(o,player.dmg*player.dmgMul*0.5);
-      for(let i=0;i<12;i++)particles.push({x:e.x,y:e.y,vx:(Math.random()-.5)*400,vy:(Math.random()-.5)*400,life:0.5,color:"#ff8800",size:5})}}
-   enemies=enemies.filter(e=>e.hp>0)}
- const pickR=100*player.magnetMul;
- for(const o of orbs){o.life-=dt;o.vx*=0.92;o.vy*=0.92;
-   const d=Math.hypot(player.x-o.x,player.y-o.y);
-   if(d<pickR){const an=Math.atan2(player.y-o.y,player.x-o.x),pull=(pickR-d)*240;
-     o.vx+=Math.cos(an)*pull*dt*10;o.vy+=Math.sin(an)*pull*dt*10}
-   o.x+=o.vx*dt;o.y+=o.vy*dt;
-   if(d<player.r+8){o.life=0;player.xp++;
-     while(player.xp>=player.xpNeed){player.xp-=player.xpNeed;player.lvl++;player.xpNeed=Math.round(player.xpNeed*1.35)+5;player.pending++}}}
- orbs=orbs.filter(o=>o.life>0);
- for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;p.vx*=0.95;p.vy*=0.95}
- particles=particles.filter(p=>p.life>0);
- for(const f of floatTexts){f.y-=30*dt;f.life-=dt}
- floatTexts=floatTexts.filter(f=>f.life>0);
- if(player.summonOn){player.summonT-=dt;if(player.summonT<=0){player.summonT=60;
-   for(let i=0;i<2;i++){const a=Math.random()*6.28;allies.push({x:player.x+Math.cos(a)*50,y:player.y+Math.sin(a)*50,life:15,cd:0,t:a})}toast("AVENGERS ASSEMBLE!")}}
- if(player.stoneOn){player.stoneT-=dt;if(player.stoneT<=0){player.stoneT=60;const fx=Math.random()*4|0;
-   if(fx===0){for(const e of enemies)damageEnemy(e,player.dmg*player.dmgMul*2);toast("INFINITY BURST!")}
-   else if(fx===1){state_slow=0.3;state_slowT=5;toast("TIME STONE!")}
-   else if(fx===2){player.hp=player.maxHp;toast("SOUL STONE!")}
-   else{for(const e of enemies)damageEnemy(e,500);toast("POWER STONE!")}}}
- $("hpText").textContent=Math.ceil(player.hp)+"/"+player.maxHp;
- $("hpFill").style.width=Math.max(0,player.hp/player.maxHp*100)+"%";
- $("lvlText").textContent=player.lvl;
- $("xpFill").style.width=(player.xp/player.xpNeed*100)+"%";
- $("timeText").textContent=fmt(player.time);
- $("killText").textContent=player.kills;
- $("heroText").textContent=player.hero.name;
- if(player.pending>0){player.pending--;paused=true;showUpgradeChoice()}}
-
-let uid=0;
-function spawnEnemy(){const t=player.time;let pool;
- if(t<60)pool=[0,0,1];else if(t<180)pool=[0,1,2,3];else if(t<360)pool=[1,2,3,4,5];else if(t<540)pool=[3,4,5,6,7];else pool=[4,5,6,7,8];
- const e=Object.assign({},ENEMIES[pool[Math.random()*pool.length|0]]);
- const s=1+t*0.006;e.hp=Math.round(e.hp*s);e.maxHp=e.hp;e.dmg=Math.round(e.dmg*s);
- const side=Math.random()*4|0;
- if(side===0){e.x=Math.random()*W;e.y=-30}else if(side===1){e.x=W+30;e.y=Math.random()*H}
- else if(side===2){e.x=Math.random()*W;e.y=H+30}else{e.x=-30;e.y=Math.random()*H}
- e.uid=++uid;e.hit=0;e.cd=0;enemies.push(e)}
-function spawnBoss(){const e=Object.assign({},ENEMIES[player.time>300?10:9]);
- const s=1+player.time*0.004;e.hp=Math.round(e.hp*s);e.maxHp=e.hp;e.dmg=Math.round(e.dmg*s);
- e.x=W/2+(Math.random()-.5)*200;e.y=-60;e.uid=++uid;e.hit=0;e.cd=0;enemies.push(e)}
-
-function fireWeapon(t){const an=Math.atan2(t.y-player.y,t.x-player.x),w=player.hero.weapon,
-  bd=player.dmg*player.dmgMul,range=player.fireRange*player.rangeMul,n=player.projCount;
- for(let i=0;i<n;i++){const a=an+(n>1?(i-(n-1)/2)*0.18:0);
-  if(w==="web")projectiles.push({x:player.x,y:player.y,vx:Math.cos(a)*700,vy:Math.sin(a)*700,dmg:bd,r:5*player.areaMul,color:"#f7f7f7",life:range/700,friendly:true});
-  else if(w==="repulsor")projectiles.push({x:player.x,y:player.y,vx:Math.cos(a)*900,vy:Math.sin(a)*900,dmg:bd,r:6*player.areaMul,color:"#f7d02e",life:range/900,friendly:true,pierce:true||player.pierceAll});
-  else if(w==="mjolnir")projectiles.push({x:player.x,y:player.y,vx:Math.cos(a)*500,vy:Math.sin(a)*500,dmg:bd*1.5,r:10*player.areaMul,color:"#5182ed",life:3,friendly:true,boom:true,t:0});
-  else if(w==="shield")projectiles.push({x:player.x,y:player.y,vx:Math.cos(a)*600,vy:Math.sin(a)*600,dmg:bd,r:12*player.areaMul,color:"#1f4ea8",life:2.5,friendly:true,bounces:3});
-  else if(w==="mystic")projectiles.push({x:player.x,y:player.y,vx:Math.cos(a)*400,vy:Math.sin(a)*400,dmg:bd*1.2,r:7*player.areaMul,color:"#a020f0",life:range/400*1.5,friendly:true,homing:true});
-  else if(w==="chaos"){for(let k=0;k<8;k++){const a2=k*Math.PI/4;
-    projectiles.push({x:player.x,y:player.y,vx:Math.cos(a2)*400,vy:Math.sin(a2)*400,dmg:bd*0.8,r:8*player.areaMul,color:"#e52529",life:0.5,friendly:true})}break}}}
-
-function damageEnemy(e,d){if(e.hp<=0)return;e.hp-=d;e.hit=0.1;floatText(e.x,e.y,String(Math.round(d)),"#fff")}
-function hitPlayer(d){if(!player||player.hp<=0)return;
- if(player.shieldT>0||player.phantom||player.dashT>0)return;
- if(Math.random()<player.dodge){floatText(player.x,player.y-20,"DODGE!","#5182ed");return}
- player.hp-=d;floatText(player.x,player.y,"-"+Math.round(d),"#ff4444");
- if(player.hp<=0)gameOver()}
-function floatText(x,y,t,c){floatTexts.push({x,y,txt:t,color:c,life:0.8})}
-function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;
- document.body.appendChild(t);setTimeout(()=>t.remove(),1200)}
-
-function showUpgradeChoice(){const w={common:60,rare:30,epic:10,legendary:3},pool=[];
- UPGRADES.forEach(u=>{for(let i=0;i<w[u.r];i++)pool.push(u)});
- const picks=[];while(picks.length<3&&pool.length){const u=pool[Math.random()*pool.length|0];if(!picks.includes(u))picks.push(u)}
- const l=$("upgradeList");l.innerHTML="";
- picks.forEach(u=>{const el=document.createElement("div");el.className="upgrade-option";
-  el.innerHTML=`<span class="upgrade-rarity rarity-${u.r}">${u.r.toUpperCase()}</span><div class="upgrade-name">${u.n}</div><div class="upgrade-desc">${u.d}</div>`;
-  el.onclick=()=>{u.f(player);$("upgradeScreen").classList.add("hidden");
-    if(player.pending>0){player.pending--;showUpgradeChoice()}else paused=false};
-  l.appendChild(el)});
- $("upgradeScreen").classList.remove("hidden")}
-
-async function gameOver(){running=false;
- const score=Math.round(player.score+player.time*2+player.kills);
- $("finalTime").textContent=fmt(player.time);$("finalKills").textContent=player.kills;
- $("finalLevel").textContent=player.lvl;$("finalScore").textContent=score;
- showScreen("gameOverScreen");
- try{const loc=JSON.parse(localStorage.getItem("mvs_scores")||"[]");
-  loc.push({n:playerName,h:player.hero.name,s:score,t:player.time|0,l:player.lvl});
-  localStorage.setItem("mvs_scores",JSON.stringify(loc))}catch(e){}
- if(sb){try{await sb.from("leaderboard").insert({player_name:playerName,hero:player.hero.name,score:score,time_survived:player.time|0,level_reached:player.lvl})}catch(e){console.warn(e)}}}
-
-async function showLeaderboard(){showScreen("leaderboardScreen");
- const l=$("lbList");l.innerHTML=`<div class="lb-row head"><div>#</div><div>Hero</div><div>Score</div><div>Time</div></div>`;
- const add=(rows)=>rows.forEach((r,i)=>{const d=document.createElement("div");d.className="lb-row";
-  d.innerHTML=`<div>${i+1}</div><div>${esc(r.n)} (${esc(r.h)})</div><div>${r.s}</div><div>${fmt(r.t)}</div>`;l.appendChild(d)});
- if(sb){try{const {data}=await sb.from("leaderboard").select("*").order("score",{ascending:false}).limit(25);
-   if(data&&data.length){add(data.map(r=>({n:r.player_name,h:r.hero,s:r.score,t:r.time_survived})));return}}catch(e){}}
- let loc=[];try{loc=JSON.parse(localStorage.getItem("mvs_scores")||"[]")}catch(e){}
- loc.sort((a,b)=>b.s-a.s);
- if(!loc.length){l.innerHTML+=`<div style="text-align:center;color:#888;padding:12px">No scores yet. Be the first!</div>`;return}
- add(loc.slice(0,25))}
-function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-
-function render(){ctx.fillStyle="#0f0f1e";ctx.fillRect(0,0,W,H);
- ctx.strokeStyle="#1a1a2e";ctx.lineWidth=1;const g=60;
- if(player){for(let x=-(player.x%g);x<W;x+=g){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
-  for(let y=-(player.y%g);y<H;y+=g){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}}
- if(!player)return;
- for(const o of orbs){ctx.fillStyle="#7aaeff";ctx.shadowColor="#5182ed";ctx.shadowBlur=8;
-  ctx.beginPath();ctx.arc(o.x,o.y,5,0,6.28);ctx.fill();ctx.shadowBlur=0}
- for(const a of allies){ctx.fillStyle="#f7d02e";ctx.beginPath();ctx.arc(a.x,a.y,10,0,6.28);ctx.fill();
-  ctx.fillStyle="#000";ctx.font="bold 12px Arial";ctx.textAlign="center";ctx.fillText("★",a.x,a.y+4)}
- for(const e of enemies){if(e.hp<=0)continue;
-  ctx.fillStyle=e.hit>0?"#fff":e.color;ctx.beginPath();ctx.arc(e.x,e.y,e.r,0,6.28);ctx.fill();
-  ctx.strokeStyle="#000";ctx.lineWidth=2;ctx.stroke();
-  if(e.boss){ctx.strokeStyle="#f7d02e";ctx.lineWidth=3;ctx.beginPath();ctx.arc(e.x,e.y,e.r+4,0,6.28);ctx.stroke()}
-  const bw=e.r*2;ctx.fillStyle="#330000";ctx.fillRect(e.x-bw/2,e.y-e.r-10,bw,4);
-  ctx.fillStyle="#e52529";ctx.fillRect(e.x-bw/2,e.y-e.r-10,bw*Math.max(0,e.hp/e.maxHp),4)}
- for(const p of enemyProj){ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill()}
- for(const p of projectiles){ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=8;
-  ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.28);ctx.fill();ctx.shadowBlur=0}
- ctx.fillStyle=player.shieldT>0?"#7af7ff":player.hero.color;
- ctx.beginPath();ctx.arc(player.x,player.y,player.r,0,6.28);ctx.fill();
- ctx.strokeStyle=player.hero.accent;ctx.lineWidth=3;ctx.stroke();
- ctx.fillStyle="#fff";ctx.font="bold 18px Arial";ctx.textAlign="center";
- ctx.fillText(player.hero.icon,player.x,player.y+6);
- for(const p of particles){ctx.globalAlpha=Math.max(0,p.life/0.5);ctx.fillStyle=p.color;
-  ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,6.28);ctx.fill()}
- ctx.globalAlpha=1;
- for(const f of floatTexts){ctx.globalAlpha=Math.max(0,f.life/0.8);ctx.fillStyle=f.color;
-  ctx.font="bold 16px Arial";ctx.fillText(f.txt,f.x,f.y)}
- ctx.globalAlpha=1}
-showScreen("menuScreen");
+function burstConfetti(){
+  const colors = ['#e7b65f','#f0aebd','#f6efe4','#c98a9c'];
+  for(let i=0;i<60;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = Math.random()*100+'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.borderRadius = Math.random()>0.5 ? '50%':'2px';
+    const duration = 2.2 + Math.random()*1.6;
+    const rotate = (Math.random()>0.5?1:-1) * (180+Math.random()*360);
+    c.animate([
+      { transform:'translateY(0) rotate(0deg)', opacity:1 },
+      { transform:`translateY(${window.innerHeight+40}px) rotate(${rotate}deg)`, opacity:0.9 }
+    ], { duration: duration*1000, easing:'cubic-bezier(.25,.46,.45,.94)' });
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), duration*1000+50);
+  }
+}
 </script>
+
 </body>
 </html>
