@@ -37,18 +37,23 @@
   }
   .serif{font-family:'Fraunces', serif;}
 
-  /* ---------- Ambient sparks ---------- */
+  /* ---------- Global Ambient sparks (all over the website) ---------- */
   .spark{
-    position:fixed; bottom:-10px; border-radius:50%;
-    background:var(--gold); opacity:0.45; pointer-events:none; z-index:1;
+    position:fixed;
+    top: -10px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 100;
     animation: rise linear infinite;
     filter: blur(0.4px);
   }
   @keyframes rise{
-    0%{ transform:translateY(0) translateX(0); opacity:0; }
-    10%{ opacity:0.5; }
-    90%{ opacity:0.3; }
-    100%{ transform:translateY(-110vh) translateX(30px); opacity:0; }
+    0%{ transform: translateY(105vh) translateX(0); opacity: 0; }
+    15%{ opacity: 0.6; }
+    85%{ opacity: 0.4; }
+    100%{ transform: translateY(-10vh) translateX(40px); opacity: 0; }
   }
 
   section{
@@ -89,73 +94,13 @@
   @keyframes fadeUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
   @keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,6px);} }
 
-  /* ---------- Letter & Photo Frame ---------- */
+  /* ---------- Letter ---------- */
   #letter{
     background:linear-gradient(180deg, var(--forest-dark) 0%, var(--forest-mid) 100%);
   }
-  .letter-container{
-    max-width:650px;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:2.5rem;
-  }
-  .polaroid-frame{
-    background: var(--cream);
-    color: var(--forest-dark);
-    padding: 1.2rem 1.2rem 2.8rem 1.2rem;
-    border-radius: 4px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
-    transform: rotate(-1.5deg);
-    transition: transform 0.3s ease;
-    max-width: 320px;
-    margin: 0 auto;
-    position: relative;
-  }
-  .polaroid-frame:hover{
-    transform: rotate(0deg) scale(1.02);
-  }
-  .polaroid-img-box{
-    width: 100%;
-    height: 280px;
-    background: #1b3d2f;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-    border-radius: 2px;
-  }
-  .polaroid-img-box img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .polaroid-placeholder{
-    color: rgba(244,239,230,0.7);
-    font-size: 0.95rem;
-    padding: 1rem;
-    text-align: center;
-  }
-  .photo-upload-input{
-    margin-top: 0.8rem;
-    font-size: 0.85rem;
-    color: var(--forest-dark);
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  .polaroid-caption{
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: 1.15rem;
-    margin-top: 1.2rem;
-    color: var(--forest-dark);
-    text-align: center;
-  }
-
   .letter-card{
+    max-width:650px;
+    width: 100%;
     text-align:left;
     background: rgba(27, 61, 47, 0.5);
     border: 1px solid var(--line);
@@ -190,114 +135,148 @@
   }
   .reveal.in{ opacity:1; transform:translateY(0); }
 
-  /* ---------- Game #3: Compliment Catcher / Floating Bubbles ---------- */
+  /* ---------- Game: Full Screen Bouncing Bubbles ---------- */
   #game{
-    background:var(--forest-mid);
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
-    padding: 6rem 1rem;
-    overflow: hidden;
-  }
-  .catcher-container{
-    max-width:800px;
-    width:100%;
-    margin:0 auto;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
-  .game-header{
-    margin-bottom:2rem;
-    text-align:center;
-  }
-  .game-header h2{
-    font-size:clamp(2rem, 5vw, 3rem);
-    font-weight:500;
-    margin-bottom:0.6rem;
-  }
-  .game-header p{
-    color:rgba(244,239,220,0.75);
-    font-size:1.05rem;
-  }
-  .bubble-play-area{
+    background: radial-gradient(circle at 50% 50%, #132e22 0%, #0a1f16 100%);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 6rem 1.5rem;
     position: relative;
-    width: 100%;
-    max-width: 700px;
-    height: 440px;
-    background: radial-gradient(circle at 50% 50%, rgba(27,61,47,0.85) 0%, rgba(10,31,22,0.98) 100%);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
     overflow: hidden;
-    margin-bottom: 2rem;
+    min-height: 100vh;
+  }
+  .game-inner{
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
-  .bubble-prompt{
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Fraunces', serif;
-    font-size: 1.3rem;
-    color: var(--gold-light);
-    text-align: center;
-    padding: 0 1.5rem;
+    position: relative;
     z-index: 10;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
   }
-  .pop-bubble{
+  .game-header{
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .game-header h2{
+    font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+  .game-header p{
+    color: rgba(244,239,220,0.8);
+    font-size: 1.15rem;
+  }
+  .game-counter{
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* Full screen interactive bounce arena */
+  .bubble-arena{
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 450px;
+    background: rgba(10, 31, 22, 0.6);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  .bouncing-bubble{
     position: absolute;
-    width: 68px;
-    height: 68px;
+    width: 82px;
+    height: 82px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(243,217,155,0.8), rgba(46,111,81,0.6) 70%, rgba(10,31,22,0.9) 100%);
-    border: 1px solid var(--gold);
+    background: radial-gradient(circle at 30% 30%, rgba(243,217,155,0.9), rgba(46,111,81,0.7) 70%, rgba(10,31,22,0.95) 100%);
+    border: 2px solid var(--gold);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 0 15px rgba(223,177,91,0.4);
-    animation: floatUp 5s linear infinite;
-    z-index: 5;
-    transition: transform 0.2s;
+    box-shadow: 0 0 20px rgba(223,177,91,0.5);
+    user-select: none;
+    transition: transform 0.15s ease;
   }
-  .pop-bubble:hover{
-    transform: scale(1.15);
+  .bouncing-bubble:hover{
+    transform: scale(1.12);
   }
-  .pop-bubble span{
-    font-size: 0.8rem;
+  .bouncing-bubble span{
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--cream);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-  }
-  @keyframes floatUp{
-    0%{ transform: translateY(240px) scale(0.8); opacity: 0; }
-    15%{ opacity: 1; }
-    85%{ opacity: 1; }
-    100%{ transform: translateY(-240px) scale(1.05); opacity: 0; }
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
   }
 
-  .bubble-card-display{
-    background: var(--forest-card);
-    border: 1px solid var(--gold);
-    padding: 1.2rem 1.8rem;
-    border-radius: 12px;
-    min-height: 85px;
+  /* Full Screen Mid Font Popup Overlay for Popped Compliments */
+  .popup-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 31, 22, 0.88);
+    backdrop-filter: blur(14px);
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    max-width: 600px;
-    width: 100%;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
   }
-  .bubble-card-display p{
-    font-family:'Fraunces', serif;
-    font-size:1.15rem;
-    color:var(--gold-light);
-    line-height:1.6;
+  .popup-overlay.show{
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .popup-card{
+    background: var(--forest-card);
+    border: 2px solid var(--gold);
+    border-radius: 20px;
+    padding: 3.5rem 3rem;
+    max-width: 650px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .popup-overlay.show .popup-card{
+    transform: scale(1);
+  }
+  .popup-card h3{
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .popup-card p{
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.5;
+    color: var(--gold-light);
+    margin-bottom: 2.5rem;
+  }
+  .popup-btn{
+    background: var(--gold);
+    color: var(--forest-dark);
+    border: none;
+    padding: 0.9rem 2.2rem;
+    border-radius: 30px;
+    font-family: 'Jost', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .popup-btn:hover{
+    opacity: 0.9;
+    transform: translateY(-2px);
   }
 
   /* ---------- Closing ---------- */
@@ -325,8 +304,8 @@
 
   /* confetti burst */
   .confetti{
-    position:fixed; top:-10px; z-index:50;
-    width:8px; height:14px; opacity:0.9;
+    position:fixed; top:-10px; z-index:50000;
+    width:9px; height:15px; opacity:0.95;
     pointer-events:none;
   }
 </style>
@@ -340,44 +319,36 @@
 </section>
 
 <section id="letter">
-  <div class="letter-container">
-    <!-- Polaroid Photo Frame where Bavly can add/upload a photo -->
-    <div class="polaroid-frame reveal">
-      <div class="polaroid-img-box" id="polaroidBox">
-        <div class="polaroid-placeholder" id="polaroidPlaceholder">
-          📷 Click below to add a photo of you & Andreea
-        </div>
-      </div>
-      <input type="file" id="photoUpload" class="photo-upload-input" accept="image/*">
-      <div class="polaroid-caption">Andreea & Bavly ✨</div>
-    </div>
-
-    <div class="letter-card reveal">
-      <span class="kicker serif">A note, just for you</span>
-      <p>Happy birthday, Andreeaaaaa ❤️🎂</p>
-      <p>Honestly, I never thought that adding you on Snapchat would lead to me talking to you until now, but here we are. I never expected you to become my best friend — well, at least from my perspective — the person I tell about my day, the person I share random thoughts with, and the person I can talk to about so many things. I'm not even a good talker, but somehow, with you, I always have something to say.</p>
-      <p>You're genuinely one of the most special people I've met, and I hope you know how much I appreciate you. I love your personality, your jokes, your way of talking, and your eyes. You're funny, caring, sarcastic, sensitive, and honestly a whole combination of things that makes you YOU.</p>
-      <p>I won't pretend I never worry about losing you again, because I do. You've become someone I genuinely don't want to lose over misunderstandings, and I hope you know that my intentions toward you have always been good, even when I don't express myself properly. I might be annoying, I might joke too much, and I might not always know how to explain myself, but I genuinely care about you.</p>
-      <p>I wish you nothing but happiness, peace, success, and all the good things life can offer you. I hope this next year brings you closer to everything you want to achieve. Never forget what a good person you are and how much you deserve to be happy.</p>
-      <span class="sign serif">La mulți ani, Andreea! ❤️</span>
-    </div>
+  <div class="letter-card reveal">
+    <span class="kicker serif">A note, just for you</span>
+    <p>Happy birthday, Andreeaaaaa ❤️🎂</p>
+    <p>Honestly, I never thought that adding you on Snapchat would lead to me talking to you until now, but here we are. I never expected you to become my best friend — well, at least from my perspective — the person I tell about my day, the person I share random thoughts with, and the person I can talk to about so many things. I'm not even a good talker, but somehow, with you, I always have something to say.</p>
+    <p>You're genuinely one of the most special people I've met, and I hope you know how much I appreciate you. I love your personality, your jokes, your way of talking, and your eyes. You're funny, caring, sarcastic, sensitive, and honestly a whole combination of things that makes you YOU.</p>
+    <p>I won't pretend I never worry about losing you again, because I do. You've become someone I genuinely don't want to lose over misunderstandings, and I hope you know that my intentions toward you have always been good, even when I don't express myself properly. I might be annoying, I might joke too much, and I might not always know how to explain myself, but I genuinely care about you.</p>
+    <p>I wish you nothing but happiness, peace, success, and all the good things life can offer you. I hope this next year brings you closer to everything you want to achieve. Never forget what a good person you are and how much you deserve to be happy.</p>
+    <span class="sign serif">La mulți ani, Andreea! ❤️</span>
   </div>
 </section>
 
 <section id="game">
-  <div class="catcher-container reveal">
+  <div class="game-inner reveal">
     <div class="game-header">
       <h2 class="serif">The Memory Bubbles 🫧</h2>
-      <p>Pop the floating bubbles in the chamber below to catch all 18 sweet traits and compliments!</p>
+      <p>Tap the bouncing bubbles in the arena below to catch all 18 sweet traits and compliments!</p>
     </div>
-    <div class="bubble-play-area" id="bubbleArea">
-      <div class="bubble-prompt" id="bubblePrompt">Pop the floating bubbles below! (0 / 18)</div>
-    </div>
-    <div class="bubble-card-display" id="bubbleCardDisplay">
-      <p id="bubbleCardText">✨ Click any floating bubble above to reveal a special thought about you!</p>
-    </div>
+    <div class="game-counter" id="gameCounter">Bubbles popped: 0 / 18</div>
+    <div class="bubble-arena" id="bubbleArena"></div>
   </div>
 </section>
+
+<!-- Full Screen Mid Font Popup Overlay -->
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-card">
+    <h3 id="popupTitle">Memory #1</h3>
+    <p id="popupText">Your wonderful, infectious laugh.</p>
+    <button class="popup-btn" id="popupCloseBtn">Continue ➜</button>
+  </div>
+</div>
 
 <section id="closing">
   <h2 class="serif">Happy Birthday, Andreea</h2>
@@ -386,17 +357,17 @@
 </section>
 
 <script>
-// ambient sparks
-const sparkCount = window.innerWidth < 600 ? 12 : 20;
-for(let i=0;i<sparkCount;i++){
+// ---------- Global Ambient Sparks All Over Website ----------
+const sparkCount = 35;
+for(let i=0; i<sparkCount; i++){
   const s = document.createElement('div');
-  s.className='spark';
-  const size = 2 + Math.random()*3.5;
-  s.style.width = size+'px';
-  s.style.height = size+'px';
-  s.style.left = Math.random()*100+'vw';
-  s.style.animationDuration = (8 + Math.random()*10)+'s';
-  s.style.animationDelay = (Math.random()*10)+'s';
+  s.className = 'spark';
+  const size = 2 + Math.random() * 3.5;
+  s.style.width = size + 'px';
+  s.style.height = size + 'px';
+  s.style.left = Math.random() * 100 + 'vw';
+  s.style.animationDuration = (7 + Math.random() * 8) + 's';
+  s.style.animationDelay = (Math.random() * 8) + 's';
   document.body.appendChild(s);
 }
 
@@ -404,26 +375,10 @@ for(let i=0;i<sparkCount;i++){
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
-},{threshold:0.2});
+},{threshold:0.15});
 revealEls.forEach(el=>io.observe(el));
 
-// Photo Upload Handler for Polaroid Frame
-const photoUpload = document.getElementById('photoUpload');
-const polaroidBox = document.getElementById('polaroidBox');
-const polaroidPlaceholder = document.getElementById('polaroidPlaceholder');
-
-photoUpload.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      polaroidBox.innerHTML = `<img src="${evt.target.result}" alt="Andreea & Bavly">`;
-    };
-    reader.readAsDataURL(file);
-  }
-});
-
-// Game #3: Compliment Catcher / Floating Bubbles Data
+// Compliments / Memories Data
 const compliments = [
   "Your wonderful, infectious laugh.",
   "How effortlessly we talk for hours.",
@@ -445,62 +400,118 @@ const compliments = [
   "✨ All 18 bubbles popped! Happy Birthday, Andreea! ❤️"
 ];
 
-const bubbleArea = document.getElementById('bubbleArea');
-const bubblePrompt = document.getElementById('bubblePrompt');
-const bubbleCardText = document.getElementById('bubbleCardText');
-let poppedCount = 0;
+const bubbleArena = document.getElementById('bubbleArena');
+const gameCounter = document.getElementById('gameCounter');
+const popupOverlay = document.getElementById('popupOverlay');
+const popupTitle = document.getElementById('popupTitle');
+const popupText = document.getElementById('popupText');
+const popupCloseBtn = document.getElementById('popupCloseBtn');
 
-// Generate 18 floating bubbles dynamically
-compliments.forEach((comp, idx) => {
-  const bubble = document.createElement('div');
-  bubble.className = 'pop-bubble';
+let poppedCount = 0;
+let currentActiveCompliment = "";
+
+// Create Bouncing Bubbles with physics/velocity simulation inside arena
+const bubblesData = compliments.map((comp, idx) => {
+  return {
+    id: idx,
+    text: comp,
+    x: 50 + (Math.random() - 0.5) * 400,
+    y: 50 + (Math.random() - 0.5) * 200,
+    vx: (Math.random() - 0.5) * 2.2,
+    vy: (Math.random() - 0.5) * 2.2,
+    popped: false
+  };
+});
+
+const bubbleElements = [];
+
+bubblesData.forEach((bData, idx) => {
+  const el = document.createElement('div');
+  el.className = 'bouncing-bubble';
+  el.innerHTML = `<span>#${idx + 1}</span>`;
+  bubbleArena.appendChild(el);
   
-  // Random horizontal position and animation duration/delay
-  const randomLeft = 10 + Math.random() * 75; // percentage
-  const animDuration = 4 + Math.random() * 3.5;
-  const animDelay = Math.random() * 4;
-  
-  bubble.style.left = randomLeft + '%';
-  bubble.style.animationDuration = animDuration + 's';
-  bubble.style.animationDelay = animDelay + 's';
-  
-  bubble.innerHTML = `<span>#${idx + 1}</span>`;
-  
-  bubble.addEventListener('click', () => {
-    if(!bubble.classList.contains('popped')) {
-      bubble.classList.add('popped');
-      bubble.style.display = 'none';
+  el.addEventListener('click', () => {
+    if(!bData.popped) {
+      bData.popped = true;
+      el.style.display = 'none';
       poppedCount++;
+      gameCounter.textContent = `Bubbles popped: ${poppedCount} / 18`;
       
-      bubbleCardText.textContent = comp;
-      bubblePrompt.textContent = `Pop the floating bubbles below! (${poppedCount} / 18)`;
+      // Show full screen mid-font popup
+      popupTitle.textContent = `Memory #${idx + 1}`;
+      popupText.textContent = bData.text;
+      popupOverlay.classList.add('show');
       
       if(poppedCount === compliments.length) {
-        bubblePrompt.textContent = "✨ All memory bubbles caught!";
         burstConfetti();
       }
     }
   });
   
-  bubbleArea.appendChild(bubble);
+  bubbleElements.push({ data: bData, element: el });
 });
+
+popupCloseBtn.addEventListener('click', () => {
+  popupOverlay.classList.remove('show');
+});
+
+// Animation loop for smooth bouncing inside arena
+function updatePhysics() {
+  const arenaWidth = bubbleArena.clientWidth;
+  const arenaHeight = bubbleArena.clientHeight;
+  const radius = 41; // half of 82px width
+
+  bubbleElements.forEach(item => {
+    if(item.data.popped) return;
+    
+    item.data.x += item.data.vx;
+    item.data.y += item.data.vy;
+    
+    // Wall bounce X
+    if(item.data.x - radius < 0) {
+      item.data.x = radius;
+      item.data.vx *= -1;
+    } else if(item.data.x + radius > arenaWidth) {
+      item.data.x = arenaWidth - radius;
+      item.data.vx *= -1;
+    }
+    
+    // Wall bounce Y
+    if(item.data.y - radius < 0) {
+      item.data.y = radius;
+      item.data.vy *= -1;
+    } else if(item.data.y + radius > arenaHeight) {
+      item.data.y = arenaHeight - radius;
+      item.data.vy *= -1;
+    }
+    
+    item.element.style.left = (item.data.x - radius) + 'px';
+    item.element.style.top = (item.data.y - radius) + 'px';
+  });
+  
+  requestAnimationFrame(updatePhysics);
+}
+
+// Start physics after layout settles
+setTimeout(updatePhysics, 100);
 
 function burstConfetti(){
   const colors = ['#dfb15b','#f3d99b','#f4efe6','#2e6f51','#f2aeb0'];
-  for(let i=0;i<75;i++){
+  for(let i=0;i<85;i++){
     const c = document.createElement('div');
     c.className='confetti';
     c.style.left = Math.random()*100+'vw';
     c.style.background = colors[Math.floor(Math.random()*colors.length)];
     c.style.borderRadius = Math.random()>0.5 ? '50%':'2px';
-    const duration = 2.2 + Math.random()*1.8;
+    const duration = 2.5 + Math.random()*2;
     const rotate = (Math.random()>0.5?1:-1) * (180+Math.random()*360);
     c.animate([
       { transform:'translateY(0) rotate(0deg)', opacity:1 },
-      { transform:`translateY(${window.innerHeight+50}px) rotate(${rotate}deg)`, opacity:0.9 }
+      { transform:`translateY(${window.innerHeight+80}px) rotate(${rotate}deg)`, opacity:0.9 }
     ], { duration: duration*1000, easing:'cubic-bezier(.25,.46,.45,.94)' });
     document.body.appendChild(c);
-    setTimeout(()=>c.remove(), duration*1000+50);
+    setTimeout(()=>c.remove(), duration*1000+100);
   }
 }
 </script>
