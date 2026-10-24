@@ -1,4 +1,4 @@
-html_content = """<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,14 +9,15 @@ html_content = """<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --midnight:#120a22;
-    --midnight-2:#1c1332;
-    --midnight-3:#271b46;
-    --gold:#e7b65f;
-    --gold-light:#f5d799;
-    --blush:#f0aebd;
-    --cream:#f6efe4;
-    --line: rgba(246,239,228,0.12);
+    --forest-dark: #0a1f16;
+    --forest-mid: #132e22;
+    --forest-card: #1b3d2f;
+    --emerald: #2e6f51;
+    --gold: #dfb15b;
+    --gold-light: #f3d99b;
+    --blush: #f2aeb0;
+    --cream: #f4efe6;
+    --line: rgba(244,239,230,0.12);
     box-sizing:border-box;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -25,7 +26,7 @@ html_content = """<!DOCTYPE html>
   html{scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior:smooth;}
   html,body{height:100%;}
   body{
-    background:var(--midnight);
+    background:var(--forest-dark);
     color:var(--cream);
     font-family:'Jost', sans-serif;
     font-weight:300;
@@ -36,7 +37,7 @@ html_content = """<!DOCTYPE html>
   }
   .serif{font-family:'Fraunces', serif;}
 
-  /* ---------- Ambient sparks ---------- */
+  /* ---------- Ambient sparks (golden green sparkle) ---------- */
   .spark{
     position:fixed; bottom:-10px; border-radius:50%;
     background:var(--gold); opacity:0.45; pointer-events:none; z-index:1;
@@ -65,14 +66,14 @@ html_content = """<!DOCTYPE html>
   /* ---------- Hero ---------- */
   #hero .eyebrow{
     font-size:0.95rem;
-    letter-spacing:0.08em;
+    letter-spacing:0.1em;
     text-transform:uppercase;
-    color:var(--blush);
+    color:var(--gold);
     opacity:0;
     animation: fadeUp 1s ease-out 0.2s forwards;
   }
   #hero h1{
-    font-size: clamp(2.8rem, 8vw, 5.6rem);
+    font-size: clamp(3rem, 8.5vw, 6rem);
     font-weight:500;
     line-height:1.05;
     margin-top:0.8rem;
@@ -80,61 +81,47 @@ html_content = """<!DOCTYPE html>
     opacity:0;
     animation: fadeUp 1.1s ease-out 0.5s forwards;
   }
-  #hero .sub{
-    margin-top:1.8rem;
-    max-width:36ch;
-    font-size:1.1rem;
-    line-height:1.65;
-    color:rgba(246,239,228,0.75);
-    opacity:0;
-    animation: fadeUp 1.1s ease-out 0.9s forwards;
-  }
   .scroll-hint{
     position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
-    font-size:0.85rem; color:rgba(246,239,228,0.5); letter-spacing:0.05em;
-    opacity:0; animation: fadeUp 1s ease-out 1.4s forwards, bob 2.2s ease-in-out 2.4s infinite;
+    font-size:0.85rem; color:rgba(244,239,230,0.5); letter-spacing:0.05em;
+    opacity:0; animation: fadeUp 1s ease-out 1.2s forwards, bob 2.2s ease-in-out 2.2s infinite;
   }
   @keyframes fadeUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
   @keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,6px);} }
 
   /* ---------- Letter ---------- */
   #letter{
-    background:linear-gradient(180deg, var(--midnight) 0%, var(--midnight-2) 100%);
+    background:linear-gradient(180deg, var(--forest-dark) 0%, var(--forest-mid) 100%);
   }
   .letter-card{
-    max-width:600px;
+    max-width:650px;
     text-align:left;
-    background: rgba(36, 26, 63, 0.45);
+    background: rgba(27, 61, 47, 0.5);
     border: 1px solid var(--line);
-    padding: 3rem 2.5rem;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    padding: 3.5rem 3rem;
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4);
   }
   @media(max-width:600px){
-    .letter-card{ padding: 2rem 1.5rem; }
+    .letter-card{ padding: 2.2rem 1.6rem; }
   }
   .letter-card .kicker{
-    font-size:0.95rem; color:var(--gold); margin-bottom:1.4rem; display:block; letter-spacing:0.05em; text-transform:uppercase;
-  }
-  .letter-card .letter-editable-content {
-    outline: none;
+    font-size:0.95rem; color:var(--gold); margin-bottom:1.6rem; display:block; letter-spacing:0.08em; text-transform:uppercase;
   }
   .letter-card p{
     font-size:1.08rem;
-    line-height:1.9;
-    color:rgba(246,239,228,0.9);
-    margin-bottom:1.4rem;
-    outline: none;
+    line-height:1.95;
+    color:rgba(244,239,230,0.92);
+    margin-bottom:1.5rem;
   }
   .letter-card .sign{
     font-family:'Fraunces', serif;
     font-style:italic;
-    font-size:1.4rem;
-    margin-top:1.6rem;
-    color:var(--blush);
+    font-size:1.45rem;
+    margin-top:1.8rem;
+    color:var(--gold-light);
     display:block;
-    outline: none;
   }
   .reveal{
     opacity:0; transform:translateY(24px);
@@ -142,185 +129,121 @@ html_content = """<!DOCTYPE html>
   }
   .reveal.in{ opacity:1; transform:translateY(0); }
 
-  /* ---------- Moments / Memories Timeline ---------- */
-  #moments {
-    background: var(--midnight-2);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding: 6rem 1.5rem;
+  /* ---------- Fun Game: 18th Birthday Milestone Cards ---------- */
+  #game{
+    background:var(--forest-mid);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
   }
-  .moments-container {
-    max-width: 800px;
-    width: 100%;
-    margin: 0 auto;
-    text-align: left;
+  .game-container{
+    max-width:850px;
+    width:100%;
+    margin:0 auto;
   }
-  .moments-header {
-    text-align: center;
-    margin-bottom: 4rem;
+  .game-header{
+    margin-bottom:3rem;
   }
-  .moments-header h2 {
-    font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 500;
-    margin-bottom: 0.8rem;
-    outline: none;
+  .game-header h2{
+    font-size:clamp(2rem, 5vw, 3.2rem);
+    font-weight:500;
+    margin-bottom:0.8rem;
   }
-  .moments-header p {
-    color: rgba(246,239,228,0.7);
-    font-size: 1.05rem;
-    outline: none;
+  .game-header p{
+    color:rgba(244,239,220,0.7);
+    font-size:1.1rem;
   }
-  .moment-item {
-    background: rgba(28, 19, 50, 0.7);
+  .cards-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap:1.5rem;
+    text-align:left;
+  }
+  .milestone-card{
+    background: var(--forest-card);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 2.2rem;
-    margin-bottom: 2rem;
-    position: relative;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-  }
-  .moment-item:hover {
-    transform: translateY(-3px);
-    border-color: rgba(231, 182, 95, 0.35);
-  }
-  .moment-item h3 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.4rem;
-    color: var(--gold-light);
-    margin-bottom: 0.8rem;
-    font-weight: 500;
-    outline: none;
-  }
-  .moment-item p {
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: rgba(246,239,228,0.85);
-    outline: none;
-  }
-  .moment-delete-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: rgba(240, 174, 189, 0.15);
-    color: var(--blush);
-    border: 1px solid rgba(240, 174, 189, 0.3);
-    padding: 0.3rem 0.6rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    padding: 1.8rem;
     cursor: pointer;
-    display: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
   }
-  body.editing .moment-delete-btn {
-    display: inline-block;
+  .milestone-card:hover{
+    transform: translateY(-4px);
+    border-color: rgba(223, 177, 91, 0.4);
+    background: rgba(35, 78, 60, 0.7);
   }
-  .add-moment-inline-container {
-    text-align: center;
-    margin-top: 1.5rem;
-    display: none;
-  }
-  body.editing .add-moment-inline-container {
-    display: block;
-  }
-
-  /* ---------- Candles ---------- */
-  #wish{
-    background:var(--midnight);
-  }
-  #wish h2{
-    font-size:clamp(1.8rem,4.5vw,2.8rem);
-    font-weight:500;
+  .milestone-card .num{
+    font-family:'Fraunces', serif;
+    font-size:2rem;
+    color:var(--gold);
     margin-bottom:0.6rem;
-    outline: none;
+    font-weight:500;
+    opacity:0.85;
   }
-  #wish .hint{
-    color:rgba(246,239,228,0.65);
-    margin-bottom:3.5rem;
-    font-size:1.05rem;
-    outline: none;
+  .milestone-card h3{
+    font-size:1.15rem;
+    color:var(--cream);
+    margin-bottom:0.6rem;
+    font-weight:500;
   }
-  .cake{
-    display:flex;
-    gap:2.4rem;
-    margin-bottom:2.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
+  .milestone-card p{
+    font-size:0.95rem;
+    color:rgba(244,239,230,0.7);
+    line-height:1.6;
+    display:none;
   }
-  .candle-btn{
-    background:none; border:none; cursor:pointer; padding:0.4rem;
-    display:flex; flex-direction:column; align-items:center;
-    -webkit-tap-highlight-color: transparent;
+  .milestone-card.revealed p{
+    display:block;
+    animation: fadeIn 0.4s ease-out forwards;
   }
-  .candle-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:4px; border-radius:6px; }
-  .flame{
-    width:14px; height:22px;
-    background: radial-gradient(circle at 50% 70%, #fff2c7, var(--gold) 55%, #d9832f 90%);
-    border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
-    margin-bottom:6px;
-    animation: flicker 1.6s ease-in-out infinite;
-    transform-origin:bottom center;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+  .milestone-card.revealed .tap-hint{
+    display:none;
   }
-  @keyframes flicker{
-    0%,100%{ transform:scale(1) rotate(-1deg); }
-    50%{ transform:scale(1.08) rotate(2deg); }
+  .tap-hint{
+    font-size:0.8rem;
+    color:var(--gold);
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    margin-top:0.5rem;
+    display:inline-block;
   }
-  .candle-btn.out .flame{ opacity:0; transform:scale(0.2) translateY(6px); }
-  .stick{
-    width:8px; height:52px;
-    background: linear-gradient(180deg, var(--blush), #c98a9c);
-    border-radius:2px;
-  }
-  .smoke{
-    width:2px; height:0;
-    background: rgba(246,239,228,0.4);
-    margin-bottom:6px;
-    opacity:0;
-  }
-  .candle-btn.out .smoke{
-    animation: smokeUp 1.2s ease-out forwards;
-  }
-  @keyframes smokeUp{
-    0%{ height:0; opacity:0.6; transform:translateY(0);}
-    100%{ height:34px; opacity:0; transform:translateY(-14px);}
-  }
-  .wish-msg{
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .game-completion-msg{
+    margin-top:3rem;
     font-family:'Fraunces', serif;
     font-style:italic;
-    font-size:1.35rem;
-    color:var(--gold);
-    min-height:1.6em;
+    font-size:1.4rem;
+    color:var(--gold-light);
     opacity:0;
     transition: opacity 0.6s ease;
-    max-width: 38ch;
-    line-height: 1.5;
-    outline: none;
   }
-  .wish-msg.show{ opacity:1; }
+  .game-completion-msg.show{
+    opacity:1;
+  }
 
   /* ---------- Closing ---------- */
   #closing{
-    background: linear-gradient(180deg, var(--midnight) 0%, var(--midnight-2) 100%);
+    background: linear-gradient(180deg, var(--forest-mid) 0%, var(--forest-dark) 100%);
   }
   #closing h2{
-    font-size:clamp(2rem,6vw,3.4rem);
+    font-size:clamp(2.2rem,6vw,3.6rem);
     font-weight:500;
     max-width:14ch;
-    margin-bottom:1rem;
-    outline: none;
+    margin-bottom:1.2rem;
   }
   #closing p{
-    color:rgba(246,239,228,0.75);
+    color:rgba(244,239,230,0.75);
     max-width:34ch;
     line-height:1.7;
     font-size:1.1rem;
-    outline: none;
   }
   #closing .year{
     margin-top:2.5rem;
-    font-size:1rem;
+    font-size:1.05rem;
     color:var(--gold);
-    letter-spacing:0.1em;
-    outline: none;
+    letter-spacing:0.12em;
   }
 
   /* confetti burst */
@@ -329,308 +252,46 @@ html_content = """<!DOCTYPE html>
     width:8px; height:14px; opacity:0.9;
     pointer-events:none;
   }
-
-  /* ---------- Live Word-like Edit Mode Styles ---------- */
-  body.editing [contenteditable="true"] {
-    background: rgba(231, 182, 95, 0.08);
-    border: 1px dashed rgba(231, 182, 95, 0.4);
-    border-radius: 4px;
-    padding: 0.2rem 0.4rem;
-    cursor: text;
-  }
-  body.editing [contenteditable="true"]:focus {
-    background: rgba(231, 182, 95, 0.15);
-    border-color: var(--gold);
-    outline: none;
-  }
-
-  /* Floating Word-like Ribbon Toolbar */
-  .word-ribbon {
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: rgba(24, 15, 43, 0.92);
-    border: 1px solid var(--gold);
-    backdrop-filter: blur(14px);
-    padding: 0.6rem 1.2rem;
-    border-radius: 40px;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  body.editing .word-ribbon {
-    transform: translateX(-50%) translateY(0);
-  }
-  .ribbon-title {
-    font-family: 'Fraunces', serif;
-    font-size: 0.95rem;
-    color: var(--gold);
-    padding-right: 0.5rem;
-    border-right: 1px solid var(--line);
-  }
-  .ribbon-btn {
-    background: var(--midnight);
-    color: var(--cream);
-    border: 1px solid var(--line);
-    padding: 0.4rem 0.9rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    font-family: 'Jost', sans-serif;
-    transition: all 0.2s ease;
-  }
-  .ribbon-btn:hover {
-    border-color: var(--gold);
-    background: rgba(231, 182, 95, 0.15);
-  }
-  .ribbon-btn.primary {
-    background: var(--gold);
-    color: var(--midnight);
-    font-weight: 500;
-    border-color: var(--gold);
-  }
-  .ribbon-btn.primary:hover {
-    opacity: 0.9;
-  }
-
-  /* Floating Edit Toggle Trigger Button */
-  .floating-edit-trigger {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: rgba(36, 26, 63, 0.85);
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 0.65rem 1.2rem;
-    border-radius: 30px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    z-index: 100;
-    backdrop-filter: blur(8px);
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  }
-  .floating-edit-trigger:hover {
-    background: var(--gold);
-    color: var(--midnight);
-  }
-  body.editing .floating-edit-trigger {
-    display: none;
-  }
-
-  /* Password Modal */
-  .pass-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(12, 7, 24, 0.85);
-    backdrop-filter: blur(12px);
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1.5rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  .pass-modal.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .pass-box {
-    background: var(--midnight-2);
-    border: 1px solid var(--gold);
-    padding: 2.5rem;
-    border-radius: 16px;
-    text-align: center;
-    max-width: 380px;
-    width: 100%;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-  }
-  .pass-box h4 {
-    font-family: 'Fraunces', serif;
-    font-size: 1.5rem;
-    color: var(--gold);
-    margin-bottom: 0.6rem;
-  }
-  .pass-box p {
-    color: rgba(246,239,228,0.7);
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-  }
-  .pass-box input {
-    width: 100%;
-    background: var(--midnight);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 0.8rem;
-    color: var(--cream);
-    text-align: center;
-    font-size: 1.2rem;
-    letter-spacing: 0.1em;
-    margin-bottom: 1rem;
-  }
-  .pass-box input:focus {
-    outline: none;
-    border-color: var(--gold);
-  }
-  .pass-error {
-    color: var(--blush);
-    font-size: 0.85rem;
-    margin-bottom: 1rem;
-    min-height: 1.2em;
-  }
-  .btn-gold {
-    background: var(--gold);
-    color: var(--midnight);
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1rem;
-  }
-  .btn-gold:hover { opacity: 0.9; }
 </style>
 </head>
 <body>
 
-<!-- Live Word-like Ribbon Toolbar (Visible when editing) -->
-<div class="word-ribbon" id="wordRibbon">
-  <span class="ribbon-title">✏️ Word Editor Mode</span>
-  <button class="ribbon-btn" id="ribbonAddMoment">+ Add Moment</button>
-  <button class="ribbon-btn" id="ribbonReset">Reset Default</button>
-  <button class="ribbon-btn primary" id="ribbonSave">Save & Exit</button>
-</div>
-
 <section id="hero">
-  <span class="eyebrow" id="view-eyebrow" contenteditable="false">A little something for</span>
-  <h1 class="serif" id="view-hero-title" contenteditable="false">Happy Birthday,<br>Andreea</h1>
-  <p class="sub" id="view-hero-sub" contenteditable="false">Another trip around the sun for someone who makes the whole ride better. Scroll down — there's a bit more.</p>
+  <span class="eyebrow">Happy 18th Birthday</span>
+  <h1 class="serif">Happy Birthday,<br>Andreea</h1>
   <span class="scroll-hint">↓ keep going</span>
 </section>
 
 <section id="letter">
   <div class="letter-card reveal">
-    <span class="kicker serif" id="view-letter-kicker" contenteditable="false">A note, just for you</span>
-    <div id="view-letter-paragraphs" class="letter-editable-content">
-      <p contenteditable="false">Andreea, I hope today feels exactly the way a birthday should — a little slower, a little sweeter, full of the people and small moments that make you happiest.</p>
-      <p contenteditable="false">You've got a way of making things brighter just by being in them, and this is your day to have that same warmth pointed right back at you. So take the compliments, eat the cake without guilt, and let today be entirely yours.</p>
-      <p contenteditable="false">Here's to another year that's kinder, funnier, and even better than the last one.</p>
-    </div>
-    <span class="sign serif" id="view-letter-sign" contenteditable="false">With so much love</span>
+    <span class="kicker serif">A note, just for you</span>
+    <p>Happy birthday, Andreeaaaaa ❤️🎂</p>
+    <p>Honestly, I never thought that adding you on Snapchat would lead to me talking to you until now, but here we are. I never expected you to become my best friend — well, at least from my perspective — the person I tell about my day, the person I share random thoughts with, and the person I can talk to about so many things. I'm not even a good talker, but somehow, with you, I always have something to say.</p>
+    <p>You're genuinely one of the most special people I've met, and I hope you know how much I appreciate you. I love your personality, your jokes, your way of talking, and your eyes. You're funny, caring, sarcastic, sensitive, and honestly a whole combination of things that makes you YOU.</p>
+    <p>I won't pretend I never worry about losing you again, because I do. You've become someone I genuinely don't want to lose over misunderstandings, and I hope you know that my intentions toward you have always been good, even when I don't express myself properly. I might be annoying, I might joke too much, and I might not always know how to explain myself, but I genuinely care about you.</p>
+    <p>I wish you nothing but happiness, peace, success, and all the good things life can offer you. I hope this next year brings you closer to everything you want to achieve. Never forget what a good person you are and how much you deserve to be happy.</p>
+    <span class="sign serif">La mulți ani, Andreea! ❤️</span>
   </div>
 </section>
 
-<section id="moments">
-  <div class="moments-container reveal">
-    <div class="moments-header">
-      <h2 class="serif" id="view-moments-title" contenteditable="false">Favorite Moments</h2>
-      <p id="view-moments-sub" contenteditable="false">A few memories and things that make you amazing.</p>
+<section id="game">
+  <div class="game-container reveal">
+    <div class="game-header">
+      <h2 class="serif">Turning 18 ✨</h2>
+      <p>Tap each card below to unlock 6 special reasons why you're amazing.</p>
     </div>
-    <div id="view-moments-list">
-      <!-- Moments dynamically populated -->
-    </div>
-    <div class="add-moment-inline-container">
-      <button class="ribbon-btn primary" id="inlineAddMomentBtn">+ Add Another Memory</button>
-    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
+    <div class="game-completion-msg serif" id="completionMsg">All unlocked! Here's to your incredible 18th year ahead. 🥂</div>
   </div>
-</section>
-
-<section id="wish">
-  <h2 class="serif" id="view-wish-title" contenteditable="false">Make a wish</h2>
-  <p class="hint" id="view-wish-hint" contenteditable="false">Blow out the candles — one by one.</p>
-  <div class="cake" id="cake"></div>
-  <div class="wish-msg serif" id="wishMsg" contenteditable="false">Wish made. It's already coming true.</div>
 </section>
 
 <section id="closing">
-  <h2 class="serif" id="view-closing-title" contenteditable="false">Happy Birthday, Andreea</h2>
-  <p id="view-closing-sub" contenteditable="false">Go celebrate. You've earned every bit of it.</p>
-  <span class="year" id="view-closing-year" contenteditable="false">✦ 2026 ✦</span>
+  <h2 class="serif">Happy Birthday, Andreea</h2>
+  <p>Go celebrate and enjoy every second of being 18. You've earned every bit of it.</p>
+  <span class="year">✦ 2026 ✦</span>
 </section>
 
-<!-- Floating trigger to enter Word editor mode -->
-<button class="floating-edit-trigger" id="editModeTrigger">✏️ Edit Website (Word Mode)</button>
-
-<!-- Password Modal -->
-<div class="pass-modal" id="passModal">
-  <div class="pass-box">
-    <h4 class="serif">Admin Password</h4>
-    <p>Enter the password to type directly onto the website.</p>
-    <input type="password" id="passInput" placeholder="Password" autocomplete="current-password">
-    <div class="pass-error" id="passError"></div>
-    <button class="btn-gold" id="passSubmit">Unlock Editor</button>
-  </div>
-</div>
-
 <script>
-const defaultData = {
-  eyebrow: "A little something for",
-  heroTitle: "Happy Birthday,<br>Andreea",
-  heroSub: "Another trip around the sun for someone who makes the whole ride better. Scroll down — there's a bit more.",
-  letterKicker: "A note, just for you",
-  letterParagraphs: [
-    "Andreea, I hope today feels exactly the way a birthday should — a little slower, a little sweeter, full of the people and small moments that make you happiest.",
-    "You've got a way of making things brighter just by being in them, and this is your day to have that same warmth pointed right back at you. So take the compliments, eat the cake without guilt, and let today be entirely yours.",
-    "Here's to another year that's kinder, funnier, and even better than the last one."
-  ],
-  letterSign: "With so much love",
-  momentsTitle: "Favorite Moments",
-  momentsSub: "A few memories and things that make you amazing.",
-  moments: [
-    { title: "Your Endless Laughter", desc: "That unmistakable laugh that instantly lifts the mood in any room, no matter how chaotic the day has been." },
-    { title: "The Little Details", desc: "How you notice the small things and care so genuinely about the people around you." },
-    { title: "Here's to the Future", desc: "All the adventures, late-night talks, and wonderful memories still waiting for us in the year ahead." }
-  ],
-  wishTitle: "Make a wish",
-  wishHint: "Blow out the candles — one by one.",
-  wishMsg: "Wish made. It's already coming true.",
-  closingTitle: "Happy Birthday, Andreea",
-  closingSub: "Go celebrate. You've earned every bit of it.",
-  closingYear: "✦ 2026 ✦"
-};
-
-let siteData = JSON.parse(localStorage.getItem('andreea_birthday_data_live')) || defaultData;
-
-function renderWebsite() {
-  document.getElementById('view-eyebrow').innerHTML = siteData.eyebrow;
-  document.getElementById('view-hero-title').innerHTML = siteData.heroTitle;
-  document.getElementById('view-hero-sub').innerHTML = siteData.heroSub;
-  
-  document.getElementById('view-letter-kicker').innerHTML = siteData.letterKicker;
-  const pContainer = document.getElementById('view-letter-paragraphs');
-  pContainer.innerHTML = siteData.letterParagraphs.map(p => `<p contenteditable="false">${p}</p>`).join('');
-  document.getElementById('view-letter-sign').innerHTML = siteData.letterSign;
-
-  document.getElementById('view-moments-title').innerHTML = siteData.momentsTitle;
-  document.getElementById('view-moments-sub').innerHTML = siteData.momentsSub;
-  
-  const momentsListEl = document.getElementById('view-moments-list');
-  momentsListEl.innerHTML = siteData.moments.map((m, idx) => `
-    <div class="moment-item reveal in" data-index="${idx}">
-      <button class="moment-delete-btn" onclick="deleteMoment(${idx})">Delete</button>
-      <h3 class="serif" contenteditable="false">${m.title}</h3>
-      <p contenteditable="false">${m.desc}</p>
-    </div>
-  `).join('');
-
-  document.getElementById('view-wish-title').innerHTML = siteData.wishTitle;
-  document.getElementById('view-wish-hint').innerHTML = siteData.wishHint;
-  document.getElementById('wishMsg').innerHTML = siteData.wishMsg;
-  
-  document.getElementById('view-closing-title').innerHTML = siteData.closingTitle;
-  document.getElementById('view-closing-sub').innerHTML = siteData.closingSub;
-  document.getElementById('view-closing-year').innerHTML = siteData.closingYear;
-
-  observeReveals();
-}
-
 // ambient sparks
 const sparkCount = window.innerWidth < 600 ? 12 : 20;
 for(let i=0;i<sparkCount;i++){
@@ -645,46 +306,52 @@ for(let i=0;i<sparkCount;i++){
   document.body.appendChild(s);
 }
 
-function observeReveals() {
-  const revealEls = document.querySelectorAll('.reveal:not(.in)');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
-  },{threshold:0.2});
-  revealEls.forEach(el=>io.observe(el));
-}
+// scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:0.2});
+revealEls.forEach(el=>io.observe(el));
 
-// candles setup
-function initCake() {
-  const cake = document.getElementById('cake');
-  const wishMsg = document.getElementById('wishMsg');
-  cake.innerHTML = '';
-  wishMsg.classList.remove('show');
+// 18th Birthday Interactive Cards Game
+const reasons = [
+  { title: "Your Unstoppable Vibe", desc: "That unmistakable energy you bring that instantly makes conversations effortless and fun." },
+  { title: "Your Honest Heart", desc: "You care genuinely, listen deeply, and are truly one of the most special souls around." },
+  { title: "Your Great Humor", desc: "Your jokes, sarcasm, and playful spirit make every single day brighter." },
+  { title: "The Little Conversations", desc: "From random thoughts to talking about everything and anything without ever running out of things to say." },
+  { title: "Stepping into 18", desc: "A brand new chapter of freedom, amazing memories, and all the best adventures waiting for you." },
+  { title: "Simply Being YOU", desc: "Funny, sensitive, caring, and entirely irreplaceable. Never change." }
+];
 
-  const NUM_CANDLES = 5;
-  let lit = NUM_CANDLES;
+const cardsGrid = document.getElementById('cardsGrid');
+const completionMsg = document.getElementById('completionMsg');
+let revealedCount = 0;
 
-  for(let i=0;i<NUM_CANDLES;i++){
-    const btn = document.createElement('button');
-    btn.className='candle-btn';
-    btn.setAttribute('aria-label','Blow out candle');
-    btn.innerHTML = '<div class="smoke"></div><div class="flame"></div><div class="stick"></div>';
-    btn.addEventListener('click', ()=>{
-      if(document.body.classList.contains('editing')) return; // disable blowing candles while editing
-      if(btn.classList.contains('out')) return;
-      btn.classList.add('out');
-      lit--;
-      if(lit === 0){
-        wishMsg.classList.add('show');
+reasons.forEach((r, idx) => {
+  const card = document.createElement('div');
+  card.className = 'milestone-card';
+  card.innerHTML = `
+    <div class="num">0${idx + 1}</div>
+    <h3>${r.title}</h3>
+    <p>${r.desc}</p>
+    <span class="tap-hint">Tap to open →</span>
+  `;
+  card.addEventListener('click', () => {
+    if(!card.classList.contains('revealed')) {
+      card.classList.add('revealed');
+      revealedCount++;
+      if(revealedCount === reasons.length) {
+        completionMsg.classList.add('show');
         burstConfetti();
       }
-    });
-    cake.appendChild(btn);
-  }
-}
+    }
+  });
+  cardsGrid.appendChild(card);
+});
 
 function burstConfetti(){
-  const colors = ['#e7b65f','#f0aebd','#f6efe4','#c98a9c','#f5d799'];
-  for(let i=0;i<70;i++){
+  const colors = ['#dfb15b','#f3d99b','#f4efe6','#2e6f51','#f2aeb0'];
+  for(let i=0;i<75;i++){
     const c = document.createElement('div');
     c.className='confetti';
     c.style.left = Math.random()*100+'vw';
@@ -700,122 +367,6 @@ function burstConfetti(){
     setTimeout(()=>c.remove(), duration*1000+50);
   }
 }
-
-renderWebsite();
-initCake();
-
-// Password & Edit Mode Logic
-const editModeTrigger = document.getElementById('editModeTrigger');
-const passModal = document.getElementById('passModal');
-const passInput = document.getElementById('passInput');
-const passSubmit = document.getElementById('passSubmit');
-const passError = document.getElementById('passError');
-
-editModeTrigger.addEventListener('click', () => {
-  passModal.classList.add('open');
-  passInput.value = '';
-  passError.textContent = '';
-  setTimeout(() => passInput.focus(), 100);
-});
-
-passModal.addEventListener('click', (e) => {
-  if(e.target === passModal) passModal.classList.remove('open');
-});
-
-passSubmit.addEventListener('click', verifyPass);
-passInput.addEventListener('keypress', (e) => {
-  if(e.key === 'Enter') verifyPass();
-});
-
-function verifyPass() {
-  if(passInput.value === 'bobb') {
-    passModal.classList.remove('open');
-    enableEditMode();
-  } else {
-    passError.textContent = 'Incorrect password. (Hint: bobb)';
-    passInput.focus();
-  }
-}
-
-function enableEditMode() {
-  document.body.classList.add('editing');
-  // Make all view elements contenteditable
-  const editables = document.querySelectorAll('#hero span, #hero h1, #hero p, #letter span, #letter p, #moments h2, #moments p, #moments h3, #wish h2, #wish p, #wishDiv, #wishMsg, #closing h2, #closing p, #closing span');
-  editables.forEach(el => el.setAttribute('contenteditable', 'true'));
-}
-
-function disableEditMode() {
-  document.body.classList.remove('editing');
-  const editables = document.querySelectorAll('[contenteditable]');
-  editables.forEach(el => el.setAttribute('contenteditable', 'false'));
-}
-
-function collectDataFromDOM() {
-  siteData.eyebrow = document.getElementById('view-eyebrow').innerHTML.trim();
-  siteData.heroTitle = document.getElementById('view-hero-title').innerHTML.trim();
-  siteData.heroSub = document.getElementById('view-hero-sub').innerHTML.trim();
-
-  siteData.letterKicker = document.getElementById('view-letter-kicker').innerHTML.trim();
-  
-  const pEls = document.querySelectorAll('#view-letter-paragraphs p');
-  siteData.letterParagraphs = Array.from(pEls).map(p => p.innerHTML.trim());
-  siteData.letterSign = document.getElementById('view-letter-sign').innerHTML.trim();
-
-  siteData.momentsTitle = document.getElementById('view-moments-title').innerHTML.trim();
-  siteData.momentsSub = document.getElementById('view-moments-sub').innerHTML.trim();
-
-  const momentCards = document.querySelectorAll('.moment-item');
-  siteData.moments = Array.from(momentCards).map(card => {
-    return {
-      title: card.querySelector('h3').innerHTML.trim(),
-      desc: card.querySelector('p').innerHTML.trim()
-    };
-  });
-
-  siteData.wishTitle = document.getElementById('view-wish-title').innerHTML.trim();
-  siteData.wishHint = document.getElementById('view-wish-hint').innerHTML.trim();
-  siteData.wishMsg = document.getElementById('wishMsg').innerHTML.trim();
-
-  siteData.closingTitle = document.getElementById('view-closing-title').innerHTML.trim();
-  siteData.closingSub = document.getElementById('view-closing-sub').innerHTML.trim();
-  siteData.closingYear = document.getElementById('view-closing-year').innerHTML.trim();
-}
-
-document.getElementById('ribbonSave').addEventListener('click', () => {
-  collectDataFromDOM();
-  localStorage.setItem('andreea_birthday_data_live', JSON.stringify(siteData));
-  disableEditMode();
-  renderWebsite();
-  initCake();
-  alert('Changes saved successfully!');
-});
-
-document.getElementById('ribbonReset').addEventListener('click', () => {
-  if(confirm('Reset all content to default?')) {
-    siteData = JSON.parse(JSON.stringify(defaultData));
-    localStorage.removeItem('andreea_birthday_data_live');
-    disableEditMode();
-    renderWebsite();
-    initCake();
-  }
-});
-
-function addMomentItem() {
-  collectDataFromDOM();
-  siteData.moments.push({ title: "New Memory", desc: "Type your memory description here..." });
-  renderWebsite();
-  enableEditMode();
-}
-
-document.getElementById('ribbonAddMoment').addEventListener('click', addMomentItem);
-document.getElementById('inlineAddMomentBtn').addEventListener('click', addMomentItem);
-
-window.deleteMoment = function(idx) {
-  collectDataFromDOM();
-  siteData.moments.splice(idx, 1);
-  renderWebsite();
-  enableEditMode();
-};
 </script>
 
 </body>
