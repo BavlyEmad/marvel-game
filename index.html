@@ -37,7 +37,7 @@
   }
   .serif{font-family:'Fraunces', serif;}
 
-  /* ---------- Global Ambient sparks (all over the website) ---------- */
+  /* ---------- Global Ambient sparks ---------- */
   .spark{
     position:fixed;
     top: -10px;
@@ -112,9 +112,6 @@
   @media(max-width:600px){
     .letter-card{ padding: 2.2rem 1.6rem; }
   }
-  .letter-card .kicker{
-    font-size:0.95rem; color:var(--gold); margin-bottom:1.6rem; display:block; letter-spacing:0.08em; text-transform:uppercase;
-  }
   .letter-card p{
     font-size:1.08rem;
     line-height:1.95;
@@ -135,7 +132,7 @@
   }
   .reveal.in{ opacity:1; transform:translateY(0); }
 
-  /* ---------- Game: Full Screen Bouncing Bubbles ---------- */
+  /* ---------- Game: Full Screen Bouncing Balloons ---------- */
   #game{
     background: radial-gradient(circle at 50% 50%, #132e22 0%, #0a1f16 100%);
     border-top: 1px solid var(--line);
@@ -170,7 +167,7 @@
     font-size: 1.15rem;
   }
   
-  /* Top frame message display instead of popup modal */
+  /* Top frame message display */
   .game-top-message{
     background: var(--forest-card);
     border: 1px solid var(--gold);
@@ -223,12 +220,13 @@
     box-shadow: inset 0 0 50px rgba(0,0,0,0.6);
     overflow: hidden;
   }
-  .bouncing-bubble{
+  /* Balloon shaped element (oval with egg-like curve) */
+  .bouncing-balloon{
     position: absolute;
-    width: 82px;
-    height: 82px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(243,217,155,0.9), rgba(46,111,81,0.7) 70%, rgba(10,31,22,0.95) 100%);
+    width: 72px;
+    height: 90px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    background: radial-gradient(circle at 35% 30%, rgba(243,217,155,0.95), rgba(46,111,81,0.75) 70%, rgba(10,31,22,0.98) 100%);
     border: 2px solid var(--gold);
     display: flex;
     align-items: center;
@@ -238,11 +236,23 @@
     user-select: none;
     transition: transform 0.15s ease;
   }
-  .bouncing-bubble:hover{
+  .bouncing-balloon:hover{
     transform: scale(1.12);
   }
-  .bouncing-bubble span{
-    font-size: 1.6rem;
+  .bouncing-balloon span{
+    font-size: 1.5rem;
+  }
+  /* Little balloon knot at bottom */
+  .bouncing-balloon::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   }
 
   /* ---------- Closing ---------- */
@@ -286,7 +296,6 @@
 
 <section id="letter">
   <div class="letter-card reveal">
-    <span class="kicker serif">A note, just for you</span>
     <p>Happy birthday, Andreeaaaaa ❤️🎂</p>
     <p>Honestly, I never thought that adding you on Snapchat would lead to me talking to you until now, but here we are. I never expected you to become my best friend — well, at least from my perspective — the person I tell about my day, the person I share random thoughts with, and the person I can talk to about so many things. I'm not even a good talker, but somehow, with you, I always have something to say.</p>
     <p>You're genuinely one of the most special people I've met, and I hope you know how much I appreciate you. I love your personality, your jokes, your way of talking, and your eyes. You're funny, caring, sarcastic, sensitive, and honestly a whole combination of things that makes you YOU.</p>
@@ -299,17 +308,17 @@
 <section id="game">
   <div class="game-inner reveal">
     <div class="game-header">
-      <h2 class="serif">The Memory Bubbles 🫧</h2>
-      <p>Tap the bouncing bubbles in the arena below to catch all 18 sweet traits and compliments!</p>
+      <h2 class="serif">Pop the ballons 🎈</h2>
+      <p>Tap the bouncing balloons in the arena below to pop them one by one!</p>
     </div>
 
     <!-- Top frame message display -->
     <div class="game-top-message" id="gameTopMsg">
-      <span class="msg-title" id="msgTitle">✨ Tap any bouncing bubble to begin!</span>
-      <span class="msg-text" id="msgText">Your popped thoughts will appear right here instantly.</span>
+      <span class="msg-title" id="msgTitle">✨ Tap any bouncing balloon to begin!</span>
+      <span class="msg-text" id="msgText">Your popped messages will appear right here instantly.</span>
     </div>
 
-    <div class="game-counter" id="gameCounter">Bubbles popped: 0 / 18</div>
+    <div class="game-counter" id="gameCounter">Balloons popped: 0 / 18</div>
     <div class="bubble-arena" id="bubbleArena"></div>
   </div>
 </section>
@@ -342,30 +351,43 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:0.15});
 revealEls.forEach(el=>io.observe(el));
 
-// 18 Birthday Emojis
+// 18 Birthday Emojis assigned to the 18 balloons
 const emojis = ['🎂', '🕯️', '🎁', '🎈', '✨', '🎉', '🍰', '💖', '🧁', '🍾', '🥂', '🌟', '🎀', '🎇', '🎊', '🍫', '💫', '👑'];
 
-// Temporary placeholder texts for the 18 bubbles (Bavly will provide exact text next)
-const compliments = [
-  "Compliment 1 placeholder...",
-  "Compliment 2 placeholder...",
-  "Compliment 3 placeholder...",
-  "Compliment 4 placeholder...",
-  "Compliment 5 placeholder...",
-  "Compliment 6 placeholder...",
-  "Compliment 7 placeholder...",
-  "Compliment 8 placeholder...",
-  "Compliment 9 placeholder...",
-  "Compliment 10 placeholder...",
-  "Compliment 11 placeholder...",
-  "Compliment 12 placeholder...",
-  "Compliment 13 placeholder...",
-  "Compliment 14 placeholder...",
-  "Compliment 15 placeholder...",
-  "Compliment 16 placeholder...",
-  "Compliment 17 placeholder...",
-  "✨ All 18 bubbles popped! Happy Birthday, Andreea! ❤️"
+// Bavly's exact 18 messages
+const messages = [
+  "I'll never regret talking to you again after you blocked me.",
+  "I love everything about you, even the little things you don't notice about yourself.",
+  "I'll always appreciate the little conversations that somehow became part of my everyday life.",
+  "i love how we are friends (one side) and hoping to make it two sides best friendss",
+  "I hope you know that you mean more to me than just another online friend.",
+  "i would never forget out super late midnight talks",
+  "andreea, i am not gay... like fr",
+  "sorry for every time i made u mad",
+  "i will be always there for you and wont leave you",
+  "i wanna know the raduis (birthday cake this timee)",
+  "i would never forget us playing roblox, we still need to try horror game",
+  "i love when u tell me random things",
+  "you always make my day better when u text me",
+  "you should start saying goodmorning everyday tho(clothes ones too)",
+  "i love when we tease each othere",
+  "i love how you never get bored talking to me (maybe you do sometimess)",
+  "MARJIIIIIIINNNNN .... hi",
+  "HAPPY BIRTHDAYYY SWEET 18"
 ];
+
+// Combine into objects
+const balloonItems = messages.map((msg, idx) => ({
+  id: idx,
+  text: msg,
+  emoji: emojis[idx % emojis.length],
+  isFinal: (idx === 17), // index 17 is #18 ("HAPPY BIRTHDAYYY SWEET 18")
+  x: 50 + (Math.random() - 0.5) * 400,
+  y: 50 + (Math.random() - 0.5) * 200,
+  vx: (Math.random() - 0.5) * 2.2,
+  vy: (Math.random() - 0.5) * 2.2,
+  popped: false
+}));
 
 const bubbleArena = document.getElementById('bubbleArena');
 const gameCounter = document.getElementById('gameCounter');
@@ -374,81 +396,77 @@ const msgTitle = document.getElementById('msgTitle');
 const msgText = document.getElementById('msgText');
 
 let poppedCount = 0;
+const balloonElements = [];
 
-// Create Bouncing Bubbles with physics/velocity simulation inside arena
-const bubblesData = compliments.map((comp, idx) => {
-  return {
-    id: idx,
-    text: comp,
-    emoji: emojis[idx % emojis.length],
-    x: 50 + (Math.random() - 0.5) * 400,
-    y: 50 + (Math.random() - 0.5) * 200,
-    vx: (Math.random() - 0.5) * 2.2,
-    vy: (Math.random() - 0.5) * 2.2,
-    popped: false
-  };
-});
-
-const bubbleElements = [];
-
-bubblesData.forEach((bData, idx) => {
+balloonItems.forEach((bData, idx) => {
   const el = document.createElement('div');
-  el.className = 'bouncing-bubble';
+  el.className = 'bouncing-balloon';
   el.innerHTML = `<span>${bData.emoji}</span>`;
   bubbleArena.appendChild(el);
   
   el.addEventListener('click', () => {
-    if(!bData.popped) {
-      bData.popped = true;
-      el.style.display = 'none';
-      poppedCount++;
-      gameCounter.textContent = `Bubbles popped: ${poppedCount} / 18`;
-      
-      // Update top frame message instantly
-      msgTitle.textContent = `Memory #${idx + 1}`;
-      msgText.textContent = bData.text;
-      
-      if(poppedCount === compliments.length) {
-        burstConfetti();
-      }
+    if(bData.popped) return;
+    
+    // Check rule: If trying to pop the final balloon (#18) before the other 17 are popped, ignore or prompt
+    if (bData.isFinal && poppedCount < 17) {
+      msgTitle.textName = "Hold on!";
+      msgText.textContent = "✨ Pop the other balloons first! Save the best for last! 😉";
+      return;
+    }
+    
+    bData.popped = true;
+    el.style.display = 'none';
+    poppedCount++;
+    gameCounter.textContent = `Balloons popped: ${poppedCount} / 18`;
+    
+    // Update top frame message
+    msgTitle.textContent = `Balloon #${poppedCount}`;
+    msgText.textContent = bData.text;
+    
+    // Small confetti when popping any balloon, and big burst on #18
+    if (bData.isFinal) {
+      burstConfetti();
+    } else {
+      smallConfetti();
     }
   });
   
-  bubbleElements.push({ data: bData, element: el });
+  balloonElements.push({ data: bData, element: el });
 });
 
 // Animation loop for smooth bouncing inside arena
 function updatePhysics() {
   const arenaWidth = bubbleArena.clientWidth;
   const arenaHeight = bubbleArena.clientHeight;
-  const radius = 41; // half of 82px width
+  const radiusX = 36; // half of 72 width
+  const radiusY = 45; // half of 90 height
 
-  bubbleElements.forEach(item => {
+  balloonElements.forEach(item => {
     if(item.data.popped) return;
     
     item.data.x += item.data.vx;
     item.data.y += item.data.vy;
     
     // Wall bounce X
-    if(item.data.x - radius < 0) {
-      item.data.x = radius;
+    if(item.data.x - radiusX < 0) {
+      item.data.x = radiusX;
       item.data.vx *= -1;
-    } else if(item.data.x + radius > arenaWidth) {
-      item.data.x = arenaWidth - radius;
+    } else if(item.data.x + radiusX > arenaWidth) {
+      item.data.x = arenaWidth - radiusX;
       item.data.vx *= -1;
     }
     
     // Wall bounce Y
-    if(item.data.y - radius < 0) {
-      item.data.y = radius;
+    if(item.data.y - radiusY < 0) {
+      item.data.y = radiusY;
       item.data.vy *= -1;
-    } else if(item.data.y + radius > arenaHeight) {
-      item.data.y = arenaHeight - radius;
+    } else if(item.data.y + radiusY > arenaHeight) {
+      item.data.y = arenaHeight - radiusY;
       item.data.vy *= -1;
     }
     
-    item.element.style.left = (item.data.x - radius) + 'px';
-    item.element.style.top = (item.data.y - radius) + 'px';
+    item.element.style.left = (item.data.x - radiusX) + 'px';
+    item.element.style.top = (item.data.y - radiusY) + 'px';
   });
   
   requestAnimationFrame(updatePhysics);
@@ -457,9 +475,26 @@ function updatePhysics() {
 // Start physics after layout settles
 setTimeout(updatePhysics, 100);
 
+function smallConfetti(){
+  const colors = ['#dfb15b','#f3d99b','#2e6f51','#f2aeb0'];
+  for(let i=0;i<15;i++){
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = Math.random()*100+'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    const duration = 1.5 + Math.random()*1;
+    c.animate([
+      { transform:'translateY(0) rotate(0deg)', opacity:1 },
+      { transform:`translateY(${window.innerHeight*0.4}px) rotate(180deg)`, opacity:0.8 }
+    ], { duration: duration*1000, easing:'ease-out' });
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), duration*1000);
+  }
+}
+
 function burstConfetti(){
   const colors = ['#dfb15b','#f3d99b','#f4efe6','#2e6f51','#f2aeb0'];
-  for(let i=0;i<85;i++){
+  for(let i=0;i<90;i++){
     const c = document.createElement('div');
     c.className='confetti';
     c.style.left = Math.random()*100+'vw';
