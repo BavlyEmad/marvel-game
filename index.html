@@ -129,17 +129,35 @@
     margin-bottom: 1.5rem;
   }
 
-  /* Password bypass box */
-  .password-form{
-    display: flex;
+  /* Bypass trigger and hidden password window */
+  .bypass-trigger{
+    background: none;
+    border: none;
+    color: rgba(244,239,230,0.5);
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'Jost', sans-serif;
+    margin-top: 0.5rem;
+  }
+  .bypass-trigger:hover{ color: var(--gold); }
+
+  .password-window{
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 0.8rem;
-    margin-top: 1rem;
+    margin-top: 1.2rem;
+    animation: fadeIn 0.3s ease-out forwards;
   }
+  .password-window.show{
+    display: flex;
+  }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
   .password-input{
-    background: rgba(10, 31, 22, 0.8);
-    border: 1px solid var(--line);
+    background: rgba(10, 31, 22, 0.9);
+    border: 1px solid var(--gold);
     padding: 0.8rem 1.2rem;
     border-radius: 30px;
     color: var(--cream);
@@ -149,10 +167,6 @@
     width: 100%;
     max-width: 280px;
     outline: none;
-    transition: border-color 0.2s;
-  }
-  .password-input:focus{
-    border-color: var(--gold);
   }
   .password-error{
     font-size: 0.85rem;
@@ -415,7 +429,11 @@
     </div>
     <p class="gate-note">Unlocks automatically on October 27, 2026 at 12:00 AM 🌙</p>
     
-    <div class="password-form">
+    <div>
+      <button class="bypass-trigger" id="bypassTriggerBtn">bypass for testing</button>
+    </div>
+
+    <div class="password-window" id="passwordWindow">
       <input type="password" id="passwordInput" class="password-input" placeholder="only gay people allowed">
       <div class="password-error" id="passwordError"></div>
     </div>
@@ -467,6 +485,8 @@
 // ---------- Countdown Timer & Password Gate Logic ----------
 const targetDate = new Date("2026-10-27T00:00:00").getTime();
 const countdownGate = document.getElementById('countdownGate');
+const bypassTriggerBtn = document.getElementById('bypassTriggerBtn');
+const passwordWindow = document.getElementById('passwordWindow');
 const passwordInput = document.getElementById('passwordInput');
 const passwordError = document.getElementById('passwordError');
 
@@ -497,6 +517,12 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+// Show password window when clicking "bypass for testing"
+bypassTriggerBtn.addEventListener('click', () => {
+  passwordWindow.classList.toggle('show');
+  passwordInput.focus();
+});
 
 // Password check on input
 passwordInput.addEventListener('input', (e) => {
