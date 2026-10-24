@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -84,13 +85,6 @@
     backdrop-filter: blur(14px);
     box-shadow: 0 30px 60px rgba(0,0,0,0.6);
   }
-  .gate-content .gate-eyebrow{
-    font-size: 0.9rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
   .gate-content h1{
     font-family: 'Fraunces', serif;
     font-size: clamp(2.2rem, 5vw, 3.2rem);
@@ -132,17 +126,41 @@
     color: rgba(244,239,230,0.7);
     font-style: italic;
     font-family: 'Fraunces', serif;
+    margin-bottom: 1.5rem;
   }
-  .bypass-btn{
-    margin-top: 1.5rem;
-    background: none;
-    border: none;
-    color: rgba(244,239,230,0.4);
-    font-size: 0.75rem;
-    cursor: pointer;
-    text-decoration: underline;
+
+  /* Password bypass box */
+  .password-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
   }
-  .bypass-btn:hover{ color: var(--gold); }
+  .password-input{
+    background: rgba(10, 31, 22, 0.8);
+    border: 1px solid var(--line);
+    padding: 0.8rem 1.2rem;
+    border-radius: 30px;
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    text-align: center;
+    width: 100%;
+    max-width: 280px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .password-input:focus{
+    border-color: var(--gold);
+  }
+  .password-error{
+    font-size: 0.85rem;
+    color: var(--blush);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    min-height: 1.2rem;
+  }
 
   /* ---------- Main Website ---------- */
   section{
@@ -376,7 +394,6 @@
 <!-- Countdown Gate (Unlocks at 27/10/2026 00:00) -->
 <div id="countdownGate">
   <div class="gate-content">
-    <span class="gate-eyebrow">A Special Surprise Awaits</span>
     <h1>Counting down to Andreea's 18th Birthday ✨</h1>
     <div class="countdown-grid">
       <div class="time-box">
@@ -397,7 +414,11 @@
       </div>
     </div>
     <p class="gate-note">Unlocks automatically on October 27, 2026 at 12:00 AM 🌙</p>
-    <button class="bypass-btn" id="bypassBtn">Bypass timer (for testing)</button>
+    
+    <div class="password-form">
+      <input type="password" id="passwordInput" class="password-input" placeholder="only gay people allowed">
+      <div class="password-error" id="passwordError"></div>
+    </div>
   </div>
 </div>
 
@@ -443,11 +464,11 @@
 </section>
 
 <script>
-// ---------- Countdown Timer Logic ----------
-// Target: October 27, 2026 at 00:00:00
+// ---------- Countdown Timer & Password Gate Logic ----------
 const targetDate = new Date("2026-10-27T00:00:00").getTime();
 const countdownGate = document.getElementById('countdownGate');
-const bypassBtn = document.getElementById('bypassBtn');
+const passwordInput = document.getElementById('passwordInput');
+const passwordError = document.getElementById('passwordError');
 
 const daysNum = document.getElementById('daysNum');
 const hoursNum = document.getElementById('hoursNum');
@@ -477,8 +498,17 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-bypassBtn.addEventListener('click', () => {
-  countdownGate.classList.add('unlocked');
+// Password check on input
+passwordInput.addEventListener('input', (e) => {
+  const val = e.target.value.trim().toLowerCase();
+  if (val === 'bobb') {
+    passwordError.textContent = "";
+    countdownGate.classList.add('unlocked');
+  } else if (val.length > 0) {
+    passwordError.textContent = "you are not gay";
+  } else {
+    passwordError.textContent = "";
+  }
 });
 
 
