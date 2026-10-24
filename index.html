@@ -169,20 +169,54 @@
     color: rgba(244,239,220,0.8);
     font-size: 1.15rem;
   }
+  
+  /* Top frame message display instead of popup modal */
+  .game-top-message{
+    background: var(--forest-card);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    padding: 1.2rem 2rem;
+    max-width: 700px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    min-height: 75px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  .game-top-message .msg-title{
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+  .game-top-message .msg-text{
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--gold-light);
+    line-height: 1.4;
+  }
+
   .game-counter{
     font-family: 'Fraunces', serif;
-    font-size: 1.25rem;
-    color: var(--gold);
+    font-size: 1.15rem;
+    color: var(--cream);
     margin-bottom: 1.5rem;
     letter-spacing: 0.05em;
+    opacity: 0.85;
   }
 
   /* Full screen interactive bounce arena */
   .bubble-arena{
     position: relative;
     width: 100%;
-    height: 60vh;
-    min-height: 450px;
+    height: 55vh;
+    min-height: 420px;
     background: rgba(10, 31, 22, 0.6);
     border: 1px solid var(--line);
     border-radius: 20px;
@@ -208,75 +242,7 @@
     transform: scale(1.12);
   }
   .bouncing-bubble span{
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--cream);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
-  }
-
-  /* Full Screen Mid Font Popup Overlay for Popped Compliments */
-  .popup-overlay{
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 31, 22, 0.88);
-    backdrop-filter: blur(14px);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  .popup-overlay.show{
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .popup-card{
-    background: var(--forest-card);
-    border: 2px solid var(--gold);
-    border-radius: 20px;
-    padding: 3.5rem 3rem;
-    max-width: 650px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.7);
-    transform: scale(0.9);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-  .popup-overlay.show .popup-card{
-    transform: scale(1);
-  }
-  .popup-card h3{
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-    margin-bottom: 1rem;
-  }
-  .popup-card p{
-    font-family: 'Fraunces', serif;
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    line-height: 1.5;
-    color: var(--gold-light);
-    margin-bottom: 2.5rem;
-  }
-  .popup-btn{
-    background: var(--gold);
-    color: var(--forest-dark);
-    border: none;
-    padding: 0.9rem 2.2rem;
-    border-radius: 30px;
-    font-family: 'Jost', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .popup-btn:hover{
-    opacity: 0.9;
-    transform: translateY(-2px);
+    font-size: 1.6rem;
   }
 
   /* ---------- Closing ---------- */
@@ -336,24 +302,22 @@
       <h2 class="serif">The Memory Bubbles 🫧</h2>
       <p>Tap the bouncing bubbles in the arena below to catch all 18 sweet traits and compliments!</p>
     </div>
+
+    <!-- Top frame message display -->
+    <div class="game-top-message" id="gameTopMsg">
+      <span class="msg-title" id="msgTitle">✨ Tap any bouncing bubble to begin!</span>
+      <span class="msg-text" id="msgText">Your popped thoughts will appear right here instantly.</span>
+    </div>
+
     <div class="game-counter" id="gameCounter">Bubbles popped: 0 / 18</div>
     <div class="bubble-arena" id="bubbleArena"></div>
   </div>
 </section>
 
-<!-- Full Screen Mid Font Popup Overlay -->
-<div class="popup-overlay" id="popupOverlay">
-  <div class="popup-card">
-    <h3 id="popupTitle">Memory #1</h3>
-    <p id="popupText">Your wonderful, infectious laugh.</p>
-    <button class="popup-btn" id="popupCloseBtn">Continue ➜</button>
-  </div>
-</div>
-
 <section id="closing">
   <h2 class="serif">Happy Birthday, Andreea</h2>
   <p>Go celebrate and enjoy every second of being 18. You've earned every bit of it.</p>
-  <span class="year">✦ 2026 ✦</span>
+  <span class="year">✦ 27/10/2026 ✦</span>
 </section>
 
 <script>
@@ -378,43 +342,45 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:0.15});
 revealEls.forEach(el=>io.observe(el));
 
-// Compliments / Memories Data
+// 18 Birthday Emojis
+const emojis = ['🎂', '🕯️', '🎁', '🎈', '✨', '🎉', '🍰', '💖', '🧁', '🍾', '🥂', '🌟', '🎀', '🎇', '🎊', '🍫', '💫', '👑'];
+
+// Temporary placeholder texts for the 18 bubbles (Bavly will provide exact text next)
 const compliments = [
-  "Your wonderful, infectious laugh.",
-  "How effortlessly we talk for hours.",
-  "Your sarcastic and funny jokes.",
-  "Your genuinely caring heart.",
-  "How you make ordinary days brighter.",
-  "The way your eyes light up with joy.",
-  "Your sensitivity and kindness.",
-  "Being my absolute best friend.",
-  "The random thoughts you share with me.",
-  "Your unstoppable positive vibe.",
-  "How comfortable I feel around you.",
-  "Your incredible strength and grace.",
-  "All our amazing late-night chats.",
-  "Knowing I can always count on you.",
-  "Your brilliant personality.",
-  "How special and irreplaceable you are.",
-  "Stepping into 18 with so much promise.",
+  "Compliment 1 placeholder...",
+  "Compliment 2 placeholder...",
+  "Compliment 3 placeholder...",
+  "Compliment 4 placeholder...",
+  "Compliment 5 placeholder...",
+  "Compliment 6 placeholder...",
+  "Compliment 7 placeholder...",
+  "Compliment 8 placeholder...",
+  "Compliment 9 placeholder...",
+  "Compliment 10 placeholder...",
+  "Compliment 11 placeholder...",
+  "Compliment 12 placeholder...",
+  "Compliment 13 placeholder...",
+  "Compliment 14 placeholder...",
+  "Compliment 15 placeholder...",
+  "Compliment 16 placeholder...",
+  "Compliment 17 placeholder...",
   "✨ All 18 bubbles popped! Happy Birthday, Andreea! ❤️"
 ];
 
 const bubbleArena = document.getElementById('bubbleArena');
 const gameCounter = document.getElementById('gameCounter');
-const popupOverlay = document.getElementById('popupOverlay');
-const popupTitle = document.getElementById('popupTitle');
-const popupText = document.getElementById('popupText');
-const popupCloseBtn = document.getElementById('popupCloseBtn');
+const gameTopMsg = document.getElementById('gameTopMsg');
+const msgTitle = document.getElementById('msgTitle');
+const msgText = document.getElementById('msgText');
 
 let poppedCount = 0;
-let currentActiveCompliment = "";
 
 // Create Bouncing Bubbles with physics/velocity simulation inside arena
 const bubblesData = compliments.map((comp, idx) => {
   return {
     id: idx,
     text: comp,
+    emoji: emojis[idx % emojis.length],
     x: 50 + (Math.random() - 0.5) * 400,
     y: 50 + (Math.random() - 0.5) * 200,
     vx: (Math.random() - 0.5) * 2.2,
@@ -428,7 +394,7 @@ const bubbleElements = [];
 bubblesData.forEach((bData, idx) => {
   const el = document.createElement('div');
   el.className = 'bouncing-bubble';
-  el.innerHTML = `<span>#${idx + 1}</span>`;
+  el.innerHTML = `<span>${bData.emoji}</span>`;
   bubbleArena.appendChild(el);
   
   el.addEventListener('click', () => {
@@ -438,10 +404,9 @@ bubblesData.forEach((bData, idx) => {
       poppedCount++;
       gameCounter.textContent = `Bubbles popped: ${poppedCount} / 18`;
       
-      // Show full screen mid-font popup
-      popupTitle.textContent = `Memory #${idx + 1}`;
-      popupText.textContent = bData.text;
-      popupOverlay.classList.add('show');
+      // Update top frame message instantly
+      msgTitle.textContent = `Memory #${idx + 1}`;
+      msgText.textContent = bData.text;
       
       if(poppedCount === compliments.length) {
         burstConfetti();
@@ -450,10 +415,6 @@ bubblesData.forEach((bData, idx) => {
   });
   
   bubbleElements.push({ data: bData, element: el });
-});
-
-popupCloseBtn.addEventListener('click', () => {
-  popupOverlay.classList.remove('show');
 });
 
 // Animation loop for smooth bouncing inside arena
