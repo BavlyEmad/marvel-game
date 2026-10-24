@@ -89,12 +89,73 @@
   @keyframes fadeUp{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
   @keyframes bob{ 0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,6px);} }
 
-  /* ---------- Letter ---------- */
+  /* ---------- Letter & Photo Frame ---------- */
   #letter{
     background:linear-gradient(180deg, var(--forest-dark) 0%, var(--forest-mid) 100%);
   }
-  .letter-card{
+  .letter-container{
     max-width:650px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:2.5rem;
+  }
+  .polaroid-frame{
+    background: var(--cream);
+    color: var(--forest-dark);
+    padding: 1.2rem 1.2rem 2.8rem 1.2rem;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    transform: rotate(-1.5deg);
+    transition: transform 0.3s ease;
+    max-width: 320px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .polaroid-frame:hover{
+    transform: rotate(0deg) scale(1.02);
+  }
+  .polaroid-img-box{
+    width: 100%;
+    height: 280px;
+    background: #1b3d2f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    border-radius: 2px;
+  }
+  .polaroid-img-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .polaroid-placeholder{
+    color: rgba(244,239,230,0.7);
+    font-size: 0.95rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  .photo-upload-input{
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    color: var(--forest-dark);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .polaroid-caption{
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    margin-top: 1.2rem;
+    color: var(--forest-dark);
+    text-align: center;
+  }
+
+  .letter-card{
     text-align:left;
     background: rgba(27, 61, 47, 0.5);
     border: 1px solid var(--line);
@@ -129,14 +190,15 @@
   }
   .reveal.in{ opacity:1; transform:translateY(0); }
 
-  /* ---------- Game #1: 18 Stars Constellation ---------- */
+  /* ---------- Game #3: Compliment Catcher / Floating Bubbles ---------- */
   #game{
     background:var(--forest-mid);
     border-top:1px solid var(--line);
     border-bottom:1px solid var(--line);
     padding: 6rem 1rem;
+    overflow: hidden;
   }
-  .constellation-container{
+  .catcher-container{
     max-width:800px;
     width:100%;
     margin:0 auto;
@@ -157,65 +219,72 @@
     color:rgba(244,239,220,0.75);
     font-size:1.05rem;
   }
-  .sky-box{
-    position:relative;
-    width:100%;
-    max-width:700px;
-    height:420px;
-    background: radial-gradient(circle at 50% 50%, rgba(27,61,47,0.7) 0%, rgba(10,31,22,0.95) 100%);
+  .bubble-play-area{
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    height: 440px;
+    background: radial-gradient(circle at 50% 50%, rgba(27,61,47,0.85) 0%, rgba(10,31,22,0.98) 100%);
     border: 1px solid var(--line);
     border-radius: 16px;
     box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
     overflow: hidden;
     margin-bottom: 2rem;
-  }
-  @media(max-width:600px){
-    .sky-box{ height:360px; }
-  }
-  /* SVG Layer for connecting lines */
-  .constellation-svg{
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  .star-node{
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    transform: translate(-50%, -50%);
-    background: rgba(223, 177, 91, 0.2);
-    border: 2px solid var(--gold);
-    border-radius: 50%;
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 500;
+  }
+  .bubble-prompt{
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
     color: var(--gold-light);
-    transition: all 0.3s ease;
+    text-align: center;
+    padding: 0 1.5rem;
+    z-index: 10;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .pop-bubble{
+    position: absolute;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(243,217,155,0.8), rgba(46,111,81,0.6) 70%, rgba(10,31,22,0.9) 100%);
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(223,177,91,0.4);
+    animation: floatUp 5s linear infinite;
     z-index: 5;
-    box-shadow: 0 0 10px rgba(223, 177, 91, 0.3);
+    transition: transform 0.2s;
   }
-  .star-node:hover{
-    transform: translate(-50%, -50%) scale(1.2);
-    background: var(--gold);
-    color: var(--forest-dark);
+  .pop-bubble:hover{
+    transform: scale(1.15);
   }
-  .star-node.lit{
-    background: var(--gold);
-    color: var(--forest-dark);
-    box-shadow: 0 0 18px var(--gold);
-    border-color: #fff;
+  .pop-bubble span{
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--cream);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   }
-  .star-msg-box{
+  @keyframes floatUp{
+    0%{ transform: translateY(240px) scale(0.8); opacity: 0; }
+    15%{ opacity: 1; }
+    85%{ opacity: 1; }
+    100%{ transform: translateY(-240px) scale(1.05); opacity: 0; }
+  }
+
+  .bubble-card-display{
     background: var(--forest-card);
     border: 1px solid var(--gold);
     padding: 1.2rem 1.8rem;
     border-radius: 12px;
-    min-height: 90px;
+    min-height: 85px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -224,7 +293,7 @@
     width: 100%;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
-  .star-msg-box p{
+  .bubble-card-display p{
     font-family:'Fraunces', serif;
     font-size:1.15rem;
     color:var(--gold-light);
@@ -271,28 +340,41 @@
 </section>
 
 <section id="letter">
-  <div class="letter-card reveal">
-    <span class="kicker serif">A note, just for you</span>
-    <p>Happy birthday, Andreeaaaaa ❤️🎂</p>
-    <p>Honestly, I never thought that adding you on Snapchat would lead to me talking to you until now, but here we are. I never expected you to become my best friend — well, at least from my perspective — the person I tell about my day, the person I share random thoughts with, and the person I can talk to about so many things. I'm not even a good talker, but somehow, with you, I always have something to say.</p>
-    <p>You're genuinely one of the most special people I've met, and I hope you know how much I appreciate you. I love your personality, your jokes, your way of talking, and your eyes. You're funny, caring, sarcastic, sensitive, and honestly a whole combination of things that makes you YOU.</p>
-    <p>I won't pretend I never worry about losing you again, because I do. You've become someone I genuinely don't want to lose over misunderstandings, and I hope you know that my intentions toward you have always been good, even when I don't express myself properly. I might be annoying, I might joke too much, and I might not always know how to explain myself, but I genuinely care about you.</p>
-    <p>I wish you nothing but happiness, peace, success, and all the good things life can offer you. I hope this next year brings you closer to everything you want to achieve. Never forget what a good person you are and how much you deserve to be happy.</p>
-    <span class="sign serif">La mulți ani, Andreea! ❤️</span>
+  <div class="letter-container">
+    <!-- Polaroid Photo Frame where Bavly can add/upload a photo -->
+    <div class="polaroid-frame reveal">
+      <div class="polaroid-img-box" id="polaroidBox">
+        <div class="polaroid-placeholder" id="polaroidPlaceholder">
+          📷 Click below to add a photo of you & Andreea
+        </div>
+      </div>
+      <input type="file" id="photoUpload" class="photo-upload-input" accept="image/*">
+      <div class="polaroid-caption">Andreea & Bavly ✨</div>
+    </div>
+
+    <div class="letter-card reveal">
+      <span class="kicker serif">A note, just for you</span>
+      <p>Happy birthday, Andreeaaaaa ❤️🎂</p>
+      <p>Honestly, I never thought that adding you on Snapchat would lead to me talking to you until now, but here we are. I never expected you to become my best friend — well, at least from my perspective — the person I tell about my day, the person I share random thoughts with, and the person I can talk to about so many things. I'm not even a good talker, but somehow, with you, I always have something to say.</p>
+      <p>You're genuinely one of the most special people I've met, and I hope you know how much I appreciate you. I love your personality, your jokes, your way of talking, and your eyes. You're funny, caring, sarcastic, sensitive, and honestly a whole combination of things that makes you YOU.</p>
+      <p>I won't pretend I never worry about losing you again, because I do. You've become someone I genuinely don't want to lose over misunderstandings, and I hope you know that my intentions toward you have always been good, even when I don't express myself properly. I might be annoying, I might joke too much, and I might not always know how to explain myself, but I genuinely care about you.</p>
+      <p>I wish you nothing but happiness, peace, success, and all the good things life can offer you. I hope this next year brings you closer to everything you want to achieve. Never forget what a good person you are and how much you deserve to be happy.</p>
+      <span class="sign serif">La mulți ani, Andreea! ❤️</span>
+    </div>
   </div>
 </section>
 
 <section id="game">
-  <div class="constellation-container reveal">
+  <div class="catcher-container reveal">
     <div class="game-header">
-      <h2 class="serif">The 18 Stars Constellation ✨</h2>
-      <p>Tap each star (1 to 18) in the night sky to light up the constellation and unlock sweet memories.</p>
+      <h2 class="serif">The Memory Bubbles 🫧</h2>
+      <p>Pop the floating bubbles in the chamber below to catch all 18 sweet traits and compliments!</p>
     </div>
-    <div class="sky-box" id="skyBox">
-      <svg class="constellation-svg" id="constellationSvg"></svg>
+    <div class="bubble-play-area" id="bubbleArea">
+      <div class="bubble-prompt" id="bubblePrompt">Pop the floating bubbles below! (0 / 18)</div>
     </div>
-    <div class="star-msg-box" id="starMsgBox">
-      <p id="starMsgText">✨ Click star #1 in the sky above to begin lighting up your constellation!</p>
+    <div class="bubble-card-display" id="bubbleCardDisplay">
+      <p id="bubbleCardText">✨ Click any floating bubble above to reveal a special thought about you!</p>
     </div>
   </div>
 </section>
@@ -325,83 +407,82 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:0.2});
 revealEls.forEach(el=>io.observe(el));
 
-// 18 Star Constellation Game Data
-const starMessages = [
-  "Star #1: That unexpected moment on Snapchat that started all our amazing conversations.",
-  "Star #2: Your infectious laugh that instantly makes any room brighter.",
-  "Star #3: Being the person I look forward to talking to every single day.",
-  "Star #4: How easily we can talk about anything and everything without running out of words.",
-  "Star #5: Your unique, wonderful personality that makes you entirely irreplaceable.",
-  "Star #6: Your sarcasm and jokes that never fail to put a smile on my face.",
-  "Star #7: How genuinely caring and sensitive you are underneath it all.",
-  "Star #8: Those effortless late-night talks where hours feel like minutes.",
-  "Star #9: The beautiful way your eyes light up when you're excited.",
-  "Star #10: Knowing that no matter what, I always want the absolute best for you.",
-  "Star #11: Stepping into 18 with so much grace, beauty, and bright potential.",
-  "Star #12: All the little inside jokes and random thoughts we share.",
-  "Star #13: Your incredible strength and the amazing person you are becoming.",
-  "Star #14: The comfort of knowing I have someone I truly trust and appreciate.",
-  "Star #15: Wishing you boundless peace, joy, and success in this new chapter.",
-  "Star #16: Every wonderful memory we've made so far—and all the ones still waiting for us.",
-  "Star #17: Never forgetting how deeply valued and special you are to me.",
-  "Star #18: ✨ Constellation Complete! Happy 18th Birthday, Andreea! You deserve the world. ❤️"
+// Photo Upload Handler for Polaroid Frame
+const photoUpload = document.getElementById('photoUpload');
+const polaroidBox = document.getElementById('polaroidBox');
+const polaroidPlaceholder = document.getElementById('polaroidPlaceholder');
+
+photoUpload.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      polaroidBox.innerHTML = `<img src="${evt.target.result}" alt="Andreea & Bavly">`;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Game #3: Compliment Catcher / Floating Bubbles Data
+const compliments = [
+  "Your wonderful, infectious laugh.",
+  "How effortlessly we talk for hours.",
+  "Your sarcastic and funny jokes.",
+  "Your genuinely caring heart.",
+  "How you make ordinary days brighter.",
+  "The way your eyes light up with joy.",
+  "Your sensitivity and kindness.",
+  "Being my absolute best friend.",
+  "The random thoughts you share with me.",
+  "Your unstoppable positive vibe.",
+  "How comfortable I feel around you.",
+  "Your incredible strength and grace.",
+  "All our amazing late-night chats.",
+  "Knowing I can always count on you.",
+  "Your brilliant personality.",
+  "How special and irreplaceable you are.",
+  "Stepping into 18 with so much promise.",
+  "✨ All 18 bubbles popped! Happy Birthday, Andreea! ❤️"
 ];
 
-// Pre-defined coordinates (percentages X, Y) for 18 stars inside the sky box
-const starCoords = [
-  {x: 12, y: 35}, {x: 25, y: 20}, {x: 38, y: 30}, {x: 52, y: 18},
-  {x: 65, y: 28}, {x: 82, y: 22}, {x: 88, y: 42}, {x: 75, y: 55},
-  {x: 62, y: 48}, {x: 50, y: 65}, {x: 35, y: 58}, {x: 20, y: 68},
-  {x: 15, y: 82}, {x: 32, y: 85}, {x: 48, y: 80}, {x: 68, y: 78},
-  {x: 85, y: 72}, {x: 90, y: 88}
-];
+const bubbleArea = document.getElementById('bubbleArea');
+const bubblePrompt = document.getElementById('bubblePrompt');
+const bubbleCardText = document.getElementById('bubbleCardText');
+let poppedCount = 0;
 
-const skyBox = document.getElementById('skyBox');
-const svg = document.getElementById('constellationSvg');
-const starMsgText = document.getElementById('starMsgText');
-let currentLitIndex = -1;
-const starElements = [];
-
-starCoords.forEach((coord, idx) => {
-  const star = document.createElement('div');
-  star.className = 'star-node';
-  star.style.left = coord.x + '%';
-  star.style.top = coord.y + '%';
-  star.textContent = idx + 1;
+// Generate 18 floating bubbles dynamically
+compliments.forEach((comp, idx) => {
+  const bubble = document.createElement('div');
+  bubble.className = 'pop-bubble';
   
-  star.addEventListener('click', () => {
-    // Allow clicking if it's the next star in sequence
-    if (idx === currentLitIndex + 1) {
-      star.classList.add('lit');
-      currentLitIndex = idx;
-      starMsgText.textContent = starMessages[idx];
+  // Random horizontal position and animation duration/delay
+  const randomLeft = 10 + Math.random() * 75; // percentage
+  const animDuration = 4 + Math.random() * 3.5;
+  const animDelay = Math.random() * 4;
+  
+  bubble.style.left = randomLeft + '%';
+  bubble.style.animationDuration = animDuration + 's';
+  bubble.style.animationDelay = animDelay + 's';
+  
+  bubble.innerHTML = `<span>#${idx + 1}</span>`;
+  
+  bubble.addEventListener('click', () => {
+    if(!bubble.classList.contains('popped')) {
+      bubble.classList.add('popped');
+      bubble.style.display = 'none';
+      poppedCount++;
       
-      // Draw connecting line to previous star if any
-      if (idx > 0) {
-        const prev = starCoords[idx - 1];
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', prev.x + '%');
-        line.setAttribute('y1', prev.y + '%');
-        line.setAttribute('x2', coord.x + '%');
-        line.setAttribute('y2', coord.y + '%');
-        line.setAttribute('stroke', '#dfb15b');
-        line.setAttribute('stroke-width', '2');
-        line.setAttribute('stroke-dasharray', '4');
-        svg.appendChild(line);
-      }
+      bubbleCardText.textContent = comp;
+      bubblePrompt.textContent = `Pop the floating bubbles below! (${poppedCount} / 18)`;
       
-      if (idx === starCoords.length - 1) {
+      if(poppedCount === compliments.length) {
+        bubblePrompt.textContent = "✨ All memory bubbles caught!";
         burstConfetti();
       }
-    } else if (idx <= currentLitIndex) {
-      starMsgText.textContent = starMessages[idx];
-    } else {
-      starMsgText.textContent = `✨ Light star #${currentLitIndex + 2} next!`;
     }
   });
   
-  skyBox.appendChild(star);
-  starElements.push(star);
+  bubbleArea.appendChild(bubble);
 });
 
 function burstConfetti(){
