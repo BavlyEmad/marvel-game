@@ -37,7 +37,7 @@
   }
   .serif{font-family:'Fraunces', serif;}
 
-  /* ---------- Ambient sparks (golden green sparkle) ---------- */
+  /* ---------- Ambient sparks ---------- */
   .spark{
     position:fixed; bottom:-10px; border-radius:50%;
     background:var(--gold); opacity:0.45; pointer-events:none; z-index:1;
@@ -129,98 +129,106 @@
   }
   .reveal.in{ opacity:1; transform:translateY(0); }
 
-  /* ---------- Fun Game: 18th Birthday Milestone Cards ---------- */
+  /* ---------- Game #1: 18 Stars Constellation ---------- */
   #game{
     background:var(--forest-mid);
     border-top:1px solid var(--line);
     border-bottom:1px solid var(--line);
+    padding: 6rem 1rem;
   }
-  .game-container{
-    max-width:850px;
+  .constellation-container{
+    max-width:800px;
     width:100%;
     margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
   .game-header{
-    margin-bottom:3rem;
+    margin-bottom:2rem;
+    text-align:center;
   }
   .game-header h2{
-    font-size:clamp(2rem, 5vw, 3.2rem);
+    font-size:clamp(2rem, 5vw, 3rem);
     font-weight:500;
-    margin-bottom:0.8rem;
+    margin-bottom:0.6rem;
   }
   .game-header p{
-    color:rgba(244,239,220,0.7);
-    font-size:1.1rem;
+    color:rgba(244,239,220,0.75);
+    font-size:1.05rem;
   }
-  .cards-grid{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap:1.5rem;
-    text-align:left;
-  }
-  .milestone-card{
-    background: var(--forest-card);
+  .sky-box{
+    position:relative;
+    width:100%;
+    max-width:700px;
+    height:420px;
+    background: radial-gradient(circle at 50% 50%, rgba(27,61,47,0.7) 0%, rgba(10,31,22,0.95) 100%);
     border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 1.8rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
+    border-radius: 16px;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
     overflow: hidden;
+    margin-bottom: 2rem;
   }
-  .milestone-card:hover{
-    transform: translateY(-4px);
-    border-color: rgba(223, 177, 91, 0.4);
-    background: rgba(35, 78, 60, 0.7);
+  @media(max-width:600px){
+    .sky-box{ height:360px; }
   }
-  .milestone-card .num{
+  /* SVG Layer for connecting lines */
+  .constellation-svg{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .star-node{
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    transform: translate(-50%, -50%);
+    background: rgba(223, 177, 91, 0.2);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--gold-light);
+    transition: all 0.3s ease;
+    z-index: 5;
+    box-shadow: 0 0 10px rgba(223, 177, 91, 0.3);
+  }
+  .star-node:hover{
+    transform: translate(-50%, -50%) scale(1.2);
+    background: var(--gold);
+    color: var(--forest-dark);
+  }
+  .star-node.lit{
+    background: var(--gold);
+    color: var(--forest-dark);
+    box-shadow: 0 0 18px var(--gold);
+    border-color: #fff;
+  }
+  .star-msg-box{
+    background: var(--forest-card);
+    border: 1px solid var(--gold);
+    padding: 1.2rem 1.8rem;
+    border-radius: 12px;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .star-msg-box p{
     font-family:'Fraunces', serif;
-    font-size:2rem;
-    color:var(--gold);
-    margin-bottom:0.6rem;
-    font-weight:500;
-    opacity:0.85;
-  }
-  .milestone-card h3{
     font-size:1.15rem;
-    color:var(--cream);
-    margin-bottom:0.6rem;
-    font-weight:500;
-  }
-  .milestone-card p{
-    font-size:0.95rem;
-    color:rgba(244,239,230,0.7);
-    line-height:1.6;
-    display:none;
-  }
-  .milestone-card.revealed p{
-    display:block;
-    animation: fadeIn 0.4s ease-out forwards;
-  }
-  .milestone-card.revealed .tap-hint{
-    display:none;
-  }
-  .tap-hint{
-    font-size:0.8rem;
-    color:var(--gold);
-    letter-spacing:0.05em;
-    text-transform:uppercase;
-    margin-top:0.5rem;
-    display:inline-block;
-  }
-  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
-
-  .game-completion-msg{
-    margin-top:3rem;
-    font-family:'Fraunces', serif;
-    font-style:italic;
-    font-size:1.4rem;
     color:var(--gold-light);
-    opacity:0;
-    transition: opacity 0.6s ease;
-  }
-  .game-completion-msg.show{
-    opacity:1;
+    line-height:1.6;
   }
 
   /* ---------- Closing ---------- */
@@ -275,13 +283,17 @@
 </section>
 
 <section id="game">
-  <div class="game-container reveal">
+  <div class="constellation-container reveal">
     <div class="game-header">
-      <h2 class="serif">Turning 18 ✨</h2>
-      <p>Tap each card below to unlock 6 special reasons why you're amazing.</p>
+      <h2 class="serif">The 18 Stars Constellation ✨</h2>
+      <p>Tap each star (1 to 18) in the night sky to light up the constellation and unlock sweet memories.</p>
     </div>
-    <div class="cards-grid" id="cardsGrid"></div>
-    <div class="game-completion-msg serif" id="completionMsg">All unlocked! Here's to your incredible 18th year ahead. 🥂</div>
+    <div class="sky-box" id="skyBox">
+      <svg class="constellation-svg" id="constellationSvg"></svg>
+    </div>
+    <div class="star-msg-box" id="starMsgBox">
+      <p id="starMsgText">✨ Click star #1 in the sky above to begin lighting up your constellation!</p>
+    </div>
   </div>
 </section>
 
@@ -313,40 +325,83 @@ const io = new IntersectionObserver((entries)=>{
 },{threshold:0.2});
 revealEls.forEach(el=>io.observe(el));
 
-// 18th Birthday Interactive Cards Game
-const reasons = [
-  { title: "Your Unstoppable Vibe", desc: "That unmistakable energy you bring that instantly makes conversations effortless and fun." },
-  { title: "Your Honest Heart", desc: "You care genuinely, listen deeply, and are truly one of the most special souls around." },
-  { title: "Your Great Humor", desc: "Your jokes, sarcasm, and playful spirit make every single day brighter." },
-  { title: "The Little Conversations", desc: "From random thoughts to talking about everything and anything without ever running out of things to say." },
-  { title: "Stepping into 18", desc: "A brand new chapter of freedom, amazing memories, and all the best adventures waiting for you." },
-  { title: "Simply Being YOU", desc: "Funny, sensitive, caring, and entirely irreplaceable. Never change." }
+// 18 Star Constellation Game Data
+const starMessages = [
+  "Star #1: That unexpected moment on Snapchat that started all our amazing conversations.",
+  "Star #2: Your infectious laugh that instantly makes any room brighter.",
+  "Star #3: Being the person I look forward to talking to every single day.",
+  "Star #4: How easily we can talk about anything and everything without running out of words.",
+  "Star #5: Your unique, wonderful personality that makes you entirely irreplaceable.",
+  "Star #6: Your sarcasm and jokes that never fail to put a smile on my face.",
+  "Star #7: How genuinely caring and sensitive you are underneath it all.",
+  "Star #8: Those effortless late-night talks where hours feel like minutes.",
+  "Star #9: The beautiful way your eyes light up when you're excited.",
+  "Star #10: Knowing that no matter what, I always want the absolute best for you.",
+  "Star #11: Stepping into 18 with so much grace, beauty, and bright potential.",
+  "Star #12: All the little inside jokes and random thoughts we share.",
+  "Star #13: Your incredible strength and the amazing person you are becoming.",
+  "Star #14: The comfort of knowing I have someone I truly trust and appreciate.",
+  "Star #15: Wishing you boundless peace, joy, and success in this new chapter.",
+  "Star #16: Every wonderful memory we've made so far—and all the ones still waiting for us.",
+  "Star #17: Never forgetting how deeply valued and special you are to me.",
+  "Star #18: ✨ Constellation Complete! Happy 18th Birthday, Andreea! You deserve the world. ❤️"
 ];
 
-const cardsGrid = document.getElementById('cardsGrid');
-const completionMsg = document.getElementById('completionMsg');
-let revealedCount = 0;
+// Pre-defined coordinates (percentages X, Y) for 18 stars inside the sky box
+const starCoords = [
+  {x: 12, y: 35}, {x: 25, y: 20}, {x: 38, y: 30}, {x: 52, y: 18},
+  {x: 65, y: 28}, {x: 82, y: 22}, {x: 88, y: 42}, {x: 75, y: 55},
+  {x: 62, y: 48}, {x: 50, y: 65}, {x: 35, y: 58}, {x: 20, y: 68},
+  {x: 15, y: 82}, {x: 32, y: 85}, {x: 48, y: 80}, {x: 68, y: 78},
+  {x: 85, y: 72}, {x: 90, y: 88}
+];
 
-reasons.forEach((r, idx) => {
-  const card = document.createElement('div');
-  card.className = 'milestone-card';
-  card.innerHTML = `
-    <div class="num">0${idx + 1}</div>
-    <h3>${r.title}</h3>
-    <p>${r.desc}</p>
-    <span class="tap-hint">Tap to open →</span>
-  `;
-  card.addEventListener('click', () => {
-    if(!card.classList.contains('revealed')) {
-      card.classList.add('revealed');
-      revealedCount++;
-      if(revealedCount === reasons.length) {
-        completionMsg.classList.add('show');
+const skyBox = document.getElementById('skyBox');
+const svg = document.getElementById('constellationSvg');
+const starMsgText = document.getElementById('starMsgText');
+let currentLitIndex = -1;
+const starElements = [];
+
+starCoords.forEach((coord, idx) => {
+  const star = document.createElement('div');
+  star.className = 'star-node';
+  star.style.left = coord.x + '%';
+  star.style.top = coord.y + '%';
+  star.textContent = idx + 1;
+  
+  star.addEventListener('click', () => {
+    // Allow clicking if it's the next star in sequence
+    if (idx === currentLitIndex + 1) {
+      star.classList.add('lit');
+      currentLitIndex = idx;
+      starMsgText.textContent = starMessages[idx];
+      
+      // Draw connecting line to previous star if any
+      if (idx > 0) {
+        const prev = starCoords[idx - 1];
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', prev.x + '%');
+        line.setAttribute('y1', prev.y + '%');
+        line.setAttribute('x2', coord.x + '%');
+        line.setAttribute('y2', coord.y + '%');
+        line.setAttribute('stroke', '#dfb15b');
+        line.setAttribute('stroke-width', '2');
+        line.setAttribute('stroke-dasharray', '4');
+        svg.appendChild(line);
+      }
+      
+      if (idx === starCoords.length - 1) {
         burstConfetti();
       }
+    } else if (idx <= currentLitIndex) {
+      starMsgText.textContent = starMessages[idx];
+    } else {
+      starMsgText.textContent = `✨ Light star #${currentLitIndex + 2} next!`;
     }
   });
-  cardsGrid.appendChild(card);
+  
+  skyBox.appendChild(star);
+  starElements.push(star);
 });
 
 function burstConfetti(){
